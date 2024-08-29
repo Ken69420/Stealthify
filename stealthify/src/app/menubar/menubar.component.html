@@ -1,0 +1,33 @@
+<header>
+  <div class="top-bar">
+    <div class="logo-and-menu">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <span class="brand-name">Stealthify</span>
+      <button class="menu-button">
+        <span>&#9776;</span>
+      </button>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search here...">
+    </div>
+    <div class="user-icon">
+      <img src="assets/avatar.jpeg" alt="User Icon">
+    </div>
+  </div>
+</header>
+
+<div class="main-layout">
+  <div class="sidebar">
+    <ul>
+      <li class="active"><a href="/dashboard">Dashboard</a></li>
+      <li><a href="/activity">Activity</a></li>
+      <li><a href="/privileges">Privileges</a></li>
+      <li><a href="/settings">Settings</a></li>
+      <li><a href="/documentation">Documentation</a></li>
+      <li><a href="/support">Support</a></li>
+    </ul>
+  </div>
+  <div class="main-content">
+    <router-outlet></router-outlet> <!-- This is where the main content will be rendered -->
+  </div>
+</div>

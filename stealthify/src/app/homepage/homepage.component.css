@@ -1,0 +1,16 @@
+.main-layout{
+    display: flex;
+}
+
+.main-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.main-layout{
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #ADB5BD;
+}
