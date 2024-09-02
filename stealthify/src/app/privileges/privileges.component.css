@@ -1,0 +1,12 @@
+.main-layout{
+    display: flex;
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #ADB5BD;
+}
+
+.main-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
