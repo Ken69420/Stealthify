@@ -1,6 +1,9 @@
 <div class="main-layout">
     <app-menubar></app-menubar>
     <div class="main-content">
+        <div *ngIf="dataFromBackend">
+            <p>{{ dataFromBackend }}</p>
+          </div>          
         <router-outlet></router-outlet>
     </div>
 </div>

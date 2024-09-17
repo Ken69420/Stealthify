@@ -1,11 +1,11 @@
 <div class="login-container">
     <div class="login-box">
-      <form (ngSubmit)="login()">
+      <form (ngSubmit)="onLogin($event)">
         <div class="form-group">
-            <input type="text" placeholder="Username" [(ngModel)]="username" name="username" />
+            <input type="text" placeholder="Username" [(ngModel)]="username" name="username" required />
         </div>
         <div class="form-group">
-          <input type="password" placeholder="Password" name="password" />
+          <input type="password" placeholder="Password" name="password" [(ngModel)] ="password" required/>
         </div>
         <button type="submit" class="login-button">Login</button>
       </form>

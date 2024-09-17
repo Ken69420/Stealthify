@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,21 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
 
-  constructor(private router: Router){}
+  constructor(private AuthService: AuthenticationService, private router:Router){}
 
-  login() {
-    if (this.username && this.password){
-      this.router.navigate(['/homepage']);
-    }else {
-      this.router.navigate(['/homepage']);
-      //alert ('Please enter both username and password');
-    }
+  onLogin(event: Event) {
+    event.preventDefault();
+
+    this.AuthService.login(this.username, this.password).subscribe(
+      (response) => {
+        //store the token in localStorage
+        localStorage.setItem('authToken', response.token);
+        //redirect homepage
+        this.router.navigate(['/homepage']);
+      },
+      (error) =>{
+        alert('login failed!');
+      }
+    );
   }
 }
