@@ -18,10 +18,15 @@ export class HomepageComponent implements OnInit{
   constructor(private apiService:ApiService){}
 
   ngOnInit(): void {
-    this.apiService.getData().subscribe((response) => {
-      this.data = response;
-      console.log('Response from backend: ', response);
-      this.dataFromBackend = response.message;
+    this.apiService.getData().subscribe(
+      (response) => {
+        this.data = response;
+        console.log('Response from backend: ', response);
+        this.dataFromBackend = response.message; // Ensure response.message exists
+      },
+      (error) => {
+        console.error('Error fetching data:', error); // Log error if fetching fails
+        this.dataFromBackend = 'Error fetching data.'; // Show user-friendly message
     });
   }
 

@@ -3,9 +3,14 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = 3000;
+
+//MongoDB Atlas URL
+const mongoURL = 'mongodb+srv://admin1:ilovemongodb@cluster0.ko3qg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 //Middleware
 app.use(cors());
@@ -16,11 +21,19 @@ app.get('/api/data',(req,res) =>{
     res.json({ message: 'Hello from the backend!' });
 });
 
-app.listenerCount(PORT, () => {
-    console.log(`Server is running on https://localhost:${PORT}`);
-}
-);
+//Connect to MongoDB
+mongoose.connect(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 30000})
+.then (()=> console.log('MongoDB connected'))
+.catch(err => {
+    console.error('MongoDB connection error:', err.message)
+    console.error('Full Error stack:', err);
+});
+app.use(express.json());
 
+//Mount the routes
+app.use('/api/auth',authRoutes)
+
+/* 
 //Dummy user data (should be from database)
 const users = [
     {
@@ -29,6 +42,8 @@ const users = [
         password: bcrypt.hashSync('password123', 8) // hashing the password
     }
 ];
+
+
 
 //login route
 app.post('/api/login', (req,res) => {
@@ -73,13 +88,15 @@ const verifyToken = (req,res, next) => {
     });
 };
 
-//protected route (only accessible with a vlaid token)
+//protected route (only accessible with a valid token)
 app.get('/api/protected', verifyToken, (req,res) =>{
     res.json({messaage: 'This is protected data'});
 });
 
-//Start the server
 
+*/
+
+//Start the server
 app.listen(3000, ()=>{
     console.log(`Server is running on http:localhost:${PORT}`);
 });

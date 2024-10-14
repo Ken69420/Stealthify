@@ -9,5 +9,15 @@
         </div>
         <button type="submit" class="login-button">Login</button>
       </form>
+
+      <!-- Show the OTP form if OTP has been sent -->
+       <form *ngIf="isOtpSent"(ngSubmit)="onVerifyOtp()">
+        <div class="form-group">
+          <input type="text" placeholder="Enter OTP" [(ngModel)]="otp" name="otp" required="">
+        </div>
+        <button type="submit" class="login-button">Verify OTP</button>
+       </form>
     </div>
+    <div *ngIf="errorMessage" style=" color:red;">{{errorMessage}}</div>
   </div>
+  
