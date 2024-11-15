@@ -1,8 +1,6 @@
 <header>
   <div class="top-bar">
     <div class="logo-and-menu">
-      <img src="assets/logo.png" alt="Logo" class="logo">
-      <span class="brand-name">Stealthify</span>
       <button class="menu-button">
         <span>&#9776;</span>
       </button>
@@ -18,6 +16,10 @@
 
 <div class="main-layout">
   <div class="sidebar">
+    <div class="stealthify-logo">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <span class="brand-name">Stealthify</span>
+    </div>
     <ul>
       <li [ngClass]="{'active': isActive('/homepage') }"><a [routerLink]="['/homepage']">Dashboard</a></li>
       <li [ngClass]="{'active': isActive('/activity') }"><a [routerLink]="['/activity']">Activity</a></li>

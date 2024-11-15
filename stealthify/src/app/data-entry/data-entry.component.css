@@ -1,0 +1,124 @@
+.data-entry-container {
+    position: relative; /* Position relative to its normal position */
+    padding: 20px; /* Add padding for better appearance */
+    padding-top: 100px; /* Add top padding to avoid overlap with menubar */
+    box-sizing: border-box; /* Ensure padding is included in the element's total width and height */
+    background-color: #fff;
+    display: flex;
+    flex-direction: column; /* Arrange items in a column */
+    align-items: center; /* Center items horizontally */
+    border-radius: 15px; /* Slightly rounded edges */
+    max-width: 90%; /* Ensure it doesn't span across the entire page */
+    margin: 0 auto; /* Center the container horizontally */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px; /* Match the max-width of the form-container */
+  }
+
+  .header-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .header p {
+    font-size: 14px;
+    padding-right: 85px;
+  }
+
+  .bottom-text {
+    display: flex;
+    justify-content: space-between;
+    
+  }
+  
+.import-button {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #ddd;
+    color: black;
+  }
+
+.import-button:hover{
+    background-color: #007bff;
+}
+
+  .form-container {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px; /* Set a max-width to prevent it from stretching too much */
+    padding: 20px; /* Add some padding for better appearance */
+  }
+  
+  fieldset {
+    border: 3px solid #454545;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  
+  legend {
+    font-weight: bold;
+    padding: 10px 15px; /* Add padding for better appearance */
+    background-color: #f0f0f0; /* Set a background color */
+    border-radius: 8px; /* Rounded corners */
+    width: 100%; /* Span across the form */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    margin-bottom: 10px; /* Add some margin below the legend */
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+  }
+  
+  .form-section h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .form-actions {
+    text-align: right;
+    margin-top: 15px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }

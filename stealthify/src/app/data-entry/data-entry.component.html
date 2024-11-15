@@ -1,0 +1,65 @@
+<div class="data-entry-container">
+    <div class="header">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+      <div class="header-content">
+        <h2>Data Entry</h2>
+        <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none;" />
+        <button class="import-button" (click)="triggerFileInput()">Import Data</button>
+      </div>
+      <div class="bottom-text">
+        <p>
+            Please review the information listed below and make any changes if necessary.
+            Once you have finished, click [Save/Insert] to confirm them.
+        </p>
+
+        <p>(csv only)</p>
+      </div>
+      
+    </div>
+  
+    <div class="form-container">
+      <form (ngSubmit) ="onSubmit()" #dataEntryForm="ngForm">
+        <fieldset>
+          <legend>User Information</legend>
+  
+          <div class="form-section">
+            <h4>Personal</h4>
+            <label>Employee ID: <input type="text" [(ngModel)] ="employeeId" name="employeeId" required /></label>
+            <label>Gender: <input type="text" [(ngModel)] ="gender" name="gender" required /></label>
+            <label>Marital Status: <input type="text" [(ngModel)] ="maritalStatus" name="maritalStatus"  required /></label>
+          </div>
+  
+          <div class="form-section">
+            <h4>Job Details</h4>
+            <label>Department: <input type="text" [(ngModel)] ="department" name="department"  required /></label>
+            <label>Job Role: <input type="text" [(ngModel)] ="jobRole" name="jobRole" required /></label>
+            <label>Education Field: <input type="text" [(ngModel)] ="educationField" name="educationField"  required /></label>
+            <label>Distance From Home: <input type="number" [(ngModel)] ="distanceFromHome" name="distanceFromHome"  required /></label>
+          </div>
+  
+          <div class="form-section">
+            <h4>Performance Metrics</h4>
+            <label>Attrition: <input type="text" [(ngModel)] ="attrition" name="attrition"  required /></label>
+            <label>Environment Satisfactory: <input type="number" [(ngModel)] ="environmentSatisfactory" name="environmentSatisfactory"  required /></label>
+            <label>Job Satisfaction: <input type="number" [(ngModel)] ="jobSatisfaction" name="jobSatisfaction"  required /></label>
+            <label>Performance Rating: <input type="number" [(ngModel)] ="performanceRating" name="performanceRating"  required /></label>
+          </div>
+  
+          <div class="form-section">
+            <h4>Experience</h4>
+            <label>Number of Companies Worked: <input type="number" [(ngModel)] ="numberOfCompaniesWorked" name="numberOfCompaniesWorked"  required /></label>
+            <label>Total Working Years: <input type="number" [(ngModel)] ="totalWorkingYears" name="totalWorkingYears"  required /></label>
+            <label>Training Times Last Year: <input type="number" [(ngModel)] ="trainingTimesLastYear" name="trainingTimesLastYear"  required /></label>
+            <label>Years at Company: <input type="number" [(ngModel)] ="yearsAtCompany" name="yearsAtCompany"  required /></label>
+            <label>Years in Current Role: <input type="number" [(ngModel)] ="yearsInCurrentRole" name="yearsInCurrentRole"  required /></label>
+            <label>Years Since Last Promotion: <input type="number" [(ngModel)] ="yearsSinceLastPromotion" name="yearsSinceLastPromotion"  required /></label>
+            <label>Years with Current Manager: <input type="number" [(ngModel)] ="yearsWithCurrentManager" name="yearsWithCurrentManager"  required /></label>
+          </div>
+  
+          <div class="form-actions">
+            <button type="submit">Save</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>

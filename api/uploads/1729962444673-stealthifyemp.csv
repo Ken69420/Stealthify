@@ -1,0 +1,2 @@
+employeeID,gender,maritalStatus,department,jobRole,educationField,distanceFromHome,Attrition,environmentSatisfactory,jobSatisfaction,performanceRating,numberOfComponiesWorked,totalWorkingYears,trainingTimesLastYear,yearsAtCompany,yearsInCurrentRole,yearsSinceLastPromotion,yearsWithCurrentManager
+1002,female,Single,finance,Accountant,Islamic Banking,7,Sick,6,8,4,2,5,3,2,2,0,1

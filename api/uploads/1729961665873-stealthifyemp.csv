@@ -1,0 +1,18 @@
+employeeID,1002
+gender,female
+maritalStatus,Single
+department,finance
+jobRole,Accountant
+educationField,Islamic Banking
+distanceFromHome,7
+Attrition,Sick
+environmentSatisfactory,6
+jobSatisfaction,8
+performanceRating,4
+numberOfComponiesWorked,2
+totalWorkingYears,5
+trainingTimesLastYear,3
+yearsAtCompany,2
+yearsInCurrentRole,2
+yearsSinceLastPromotion,0
+yearsWithCurrentManager,1

@@ -6,6 +6,7 @@ import { PrivilegesComponent } from './privileges/privileges.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { SupportComponent } from './support/support.component';
+import { DataEntryComponent } from './data-entry/data-entry.component';
 
 
 export const routes: Routes = [
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'homepage', component: HomepageComponent },  // Route to homepage
     { path: 'activity', component: HomepageComponent}, //Route to Activity page
     { path: 'privileges', component: PrivilegesComponent}, //Route to Privileges page
+    { path: 'data-entry', component: DataEntryComponent }, //Route to Data Entry page 
     { path: 'settings', component: SettingsComponent}, //Route to Settings page
     { path: 'documentation', component: DocumentationComponent} , //Route to Documentation page
     { path: 'support', component: SupportComponent}, // Route to Settings page

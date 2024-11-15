@@ -22,7 +22,9 @@ export class AuthenticationService {
   }
 
   isAuthentication(): boolean{
-    return !!localStorage.getItem('token'); //check if the token exist
+    const token = localStorage.getItem('token');
+    console.log('Checking authentication, token:', token);
+    return !!token; // Check if the token exists
   }
 
   logout(){

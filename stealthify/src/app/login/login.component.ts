@@ -51,7 +51,9 @@ export class LoginComponent {
 
         //store the token into local storage
         localStorage.setItem('token',response.token);
-        this.router.navigate(['/dashboard']);
+        console.log('token stored in localStorage:', response.token);
+        this.router.navigate(['/homepage']);
+        console.log('navigate to dashboard');
       },
       (err) => {
         this.errorMessage = 'Invalid OTP.';
