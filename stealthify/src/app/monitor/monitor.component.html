@@ -1,0 +1,18 @@
+<table class="monitor-container">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Activity</th>
+      <th>User</th>
+      <th>Severity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of logs">
+      <td>{{ log.timestamp }}</td>
+      <td>{{ log.activity }}</td>
+      <td>{{ log.user }}</td>
+      <td>{{ log.severity }}</td>
+    </tr>
+  </tbody>
+</table>

@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './data-entry.component.html',
-  styleUrl: './data-entry.component.css'
+  styleUrl: './data-entry.component.css',
 })
 export class DataEntryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -15,6 +15,8 @@ export class DataEntryComponent {
   employeeId: string = '';
   gender: string = '';
   maritalStatus: string = '';
+  email: string = '';
+  phoneNo: string = '';
   department: string = '';
   jobRole: string = '';
   educationField: string = '';
@@ -39,7 +41,7 @@ export class DataEntryComponent {
     this.selectedFile = event.target.files[0];
     console.log('File selected:', this.selectedFile); // Log the selected file
 
-    if(this.selectedFile){
+    if (this.selectedFile) {
       this.onImport();
     }
   }
@@ -59,16 +61,18 @@ export class DataEntryComponent {
 
     console.log('Sending file to server:', this.selectedFile); // Log the file being sent
 
-    this.http.post('http://localhost:3000/api/employees/upload', formData).subscribe(
-      (response: any) => {
-        console.log('Response from the server:', response); // Log the response
-        this.message = response.message;
-      },
-      (error) => {
-        console.error('Error importing CSV data:', error);
-        this.message = 'Error importing CSV data.';
-      }
-    );
+    this.http
+      .post('http://localhost:3000/api/employees/upload', formData)
+      .subscribe(
+        (response: any) => {
+          console.log('Response from the server:', response); // Log the response
+          this.message = response.message;
+        },
+        (error) => {
+          console.error('Error importing CSV data:', error);
+          this.message = 'Error importing CSV data.';
+        }
+      );
   }
 
   onSubmit() {
@@ -76,6 +80,8 @@ export class DataEntryComponent {
       employeeId: this.employeeId,
       gender: this.gender,
       maritalStatus: this.maritalStatus,
+      email: this.email,
+      phoneNo: this.phoneNo,
       department: this.department,
       jobRole: this.jobRole,
       educationField: this.educationField,
@@ -90,17 +96,20 @@ export class DataEntryComponent {
       yearsAtCompany: this.yearsAtCompany,
       yearsInCurrentRole: this.yearsInCurrentRole,
       yearsSinceLastPromotion: this.yearsSinceLastPromotion,
-      yearsWithCurrentManager: this.yearsWithCurrentManager
+      yearsWithCurrentManager: this.yearsWithCurrentManager,
     };
 
-    this.http.post('http://localhost:3000/api/employees/save', employeeData).subscribe(
-      (response: any) => {
-        this.message = response.message;
-      },
-      (error) => {
-        console.error('Error saving employee data:', error);
-        this.message = 'Error saving employee data.';
-      }
-    );
+    this.http
+      .post('http://localhost:3000/api/employees/save', employeeData)
+      .subscribe(
+        (response: any) => {
+          console.log('Employee data saved and encrypted:', response);
+          this.message = 'Employee data saved and encrypted successfully.';
+        },
+        (error) => {
+          console.error('Error saving and encrypting employee data:', error);
+          this.message = 'Error saving and encrypting employee data.';
+        }
+      );
   }
 }

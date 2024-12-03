@@ -6,10 +6,10 @@
       </button>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Search here...">
+      <input type="text" placeholder="Search here..." />
     </div>
     <div class="user-icon">
-      <img src="assets/avatar.jpeg" alt="User Icon">
+      <img src="assets/avatar.jpeg" alt="User Icon" />
     </div>
   </div>
 </header>
@@ -17,19 +17,32 @@
 <div class="main-layout">
   <div class="sidebar">
     <div class="stealthify-logo">
-      <img src="assets/logo.png" alt="Logo" class="logo">
+      <img src="assets/logo.png" alt="Logo" class="logo" />
       <span class="brand-name">Stealthify</span>
     </div>
     <ul>
-      <li [ngClass]="{'active': isActive('/homepage') }"><a [routerLink]="['/homepage']">Dashboard</a></li>
-      <li [ngClass]="{'active': isActive('/activity') }"><a [routerLink]="['/activity']">Activity</a></li>
-      <li [ngClass]="{'active': isActive('/privileges') }"><a [routerLink]="['/privileges']">Privileges</a></li>
-      <li [ngClass]="{'active': isActive('/settings') }"><a [routerLink]="['/settings']">Settings</a></li>
-      <li><a href="/documentation">Documentation</a></li>
-      <li><a href="/support">Support</a></li>
+      <li [ngClass]="{ active: isActive('/homepage') }">
+        <a [routerLink]="['/homepage']">Dashboard</a>
+      </li>
+      <li [ngClass]="{ active: isActive('/activity') }">
+        <a [routerLink]="['/activity']">Activity</a>
+      </li>
+      <li [ngClass]="{ active: isActive('/privileges') }">
+        <a [routerLink]="['/privileges']">Data Entry</a>
+      </li>
+      <li [ngClass]="{ active: isActive('/settings') }">
+        <a [routerLink]="['/settings']">Settings</a>
+      </li>
+      <li [ngClass]="{ active: isActive('/documentation') }">
+        <a [routerLink]="['/documentation']">Documentation</a>
+      </li>
+      <li [ngClass]="{ active: isActive('/support') }">
+        <a [routerLink]="['/support']">Support</a>
+      </li>
     </ul>
   </div>
   <div class="main-content">
-    <router-outlet></router-outlet> <!-- This is where the main content will be rendered -->
+    <router-outlet></router-outlet>
+    <!-- This is where the main content will be rendered -->
   </div>
 </div>

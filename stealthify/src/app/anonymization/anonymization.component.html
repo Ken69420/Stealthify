@@ -1,0 +1,220 @@
+<div class="container">
+  <h1>Stealthify Settings</h1>
+  <p class="description">
+    Customize your anonymization preferences to suit your data privacy needs.
+  </p>
+
+  <div class="card">
+    <h2>Anonymization Techniques</h2>
+    <p>Configure various anonymization methods for your data.</p>
+
+    <!-- Masking Section -->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="maskingToggle">Masking</label>
+        <input
+          id="maskingToggle"
+          type="checkbox"
+          [(ngModel)]="settings.masking.enabled"
+          (change)="toggleStatus('Masking', settings.masking.enabled)"
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.masking.enabled">
+        <label for="emailCharactersToShow">Email characters to show</label>
+        <input
+          id="emailCharactersToShow"
+          type="number"
+          [(ngModel)]="settings.masking.emailCharactersToShow"
+          min="0"
+        />
+
+        <label for="phoneDigitsToHide">Phone digits to hide</label>
+        <input
+          id="phoneDigitsToHide"
+          type="number"
+          [(ngModel)]="settings.masking.phoneDigitsToHide"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Substitution Section -->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="substitutionToggle">Substitution</label>
+        <input
+          id="substitutionToggle"
+          type="checkbox"
+          [(ngModel)]="settings.substitution.enabled"
+          (change)="toggleStatus('Substitution', settings.substitution.enabled)"
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.substitution.enabled">
+        <label for="nameDataset">Name dataset</label>
+        <select id="nameDataset" [(ngModel)]="settings.substitution.dataset">
+          <option *ngFor="let dataset of datasets" [value]="dataset">
+            {{ dataset }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Generalization Section -->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="generalizationToggle">Generalization</label>
+        <input
+          id="generalizationToggle"
+          type="checkbox"
+          [(ngModel)]="settings.generalization.enabled"
+          (change)="
+            toggleStatus('Generalization', settings.generalization.enabled)
+          "
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.generalization.enabled">
+        <div class="generalization-instruction">
+          <p>Insert 0 to show original data</p>
+        </div>
+        <label for="numberOfCompaniesWorked"
+          >Number Of Companies Worked (Range in Years)</label
+        >
+        <input
+          id="numberOfCompaniesWorked"
+          type="number"
+          [(ngModel)]="settings.generalization.numberOfCompanies"
+          min="0"
+        />
+
+        <label for="totalWorkingYears"
+          >Total of Working Years (Range in Years)</label
+        >
+        <input
+          id="totalWorkingYears"
+          type="number"
+          [(ngModel)]="settings.generalization.totalWorkingYears"
+          min="0"
+        />
+
+        <label for="trainingTimesLastYear"
+          >Training Times Last Year (Range in amount)</label
+        >
+        <input
+          id="trainingTimesLastYear"
+          type="number"
+          [(ngModel)]="settings.generalization.trainingTimesLastYear"
+          min="0"
+        />
+
+        <label for="yearsAtCompany"
+          >Years at current Company (Range in Year)</label
+        >
+        <input
+          id="yearsAtCompany"
+          type="number"
+          [(ngModel)]="settings.generalization.yearsAtCompany"
+          min="0"
+        />
+
+        <label for="yearsInCurrentRole"
+          >Years in current role (Range in Year)</label
+        >
+        <input
+          id="yearsInCurrentRole"
+          type="number"
+          [(ngModel)]="settings.generalization.yearsInCurrentRole"
+          min="0"
+        />
+
+        <label for="yearsSinceLastPromotion"
+          >Year since last promotion (Range in Year)</label
+        >
+        <input
+          id="yearsSinceLastPromotion"
+          type="number"
+          [(ngModel)]="settings.generalization.yearsSinceLastPromotion"
+          min="0"
+        />
+
+        <label for="yearsWithCurrentManager"
+          >Years with current manager (Range in Year)</label
+        >
+        <input
+          id="yearsWithCurrentManager"
+          type="number"
+          [(ngModel)]="settings.generalization.yearsWithCurrManager"
+          min="0"
+        />
+      </div>
+    </div>
+
+    <!-- Rounding Section -->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="roundingToggle">Rounding</label>
+        <input
+          id="roundingToggle"
+          type="checkbox"
+          [(ngModel)]="settings.rounding.enabled"
+          (change)="toggleStatus('rounding', settings.rounding.enabled)"
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.rounding.enabled">
+        <div class="optionDistanceFromHome">
+          <label for="distanceFromHome">Distance From Home (in KM)</label>
+          <input
+            id="distanceFromHome"
+            type="checkbox"
+            [(ngModel)]="settings.rounding.distanceFromHome"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Pseudonymization Section-->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="pseudonymizationToggle">Pseudonymization</label>
+        <input
+          id="pseudonymizationToggle"
+          type="checkbox"
+          [(ngModel)]="settings.pseudonymization.enabled"
+          (change)="
+            toggleStatus('Pseudonymization', settings.pseudonymization.enabled)
+          "
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.pseudonymization.enabled">
+        <label for="prefix">Set the prefix for your data</label>
+        <input
+          id="prefix"
+          type="text"
+          [(ngModel)]="settings.pseudonymization.prefix"
+        />
+
+        <label for="randomStrength"
+          >Set the level of randomness to your data (1 - Low, 2 - Medium, 3 -
+          High)</label
+        >
+        <input
+          id="randomStrength"
+          type="number"
+          [(ngModel)]="settings.pseudonymization.randomStrength"
+          min="1"
+          max="3"
+        />
+      </div>
+    </div>
+  </div>
+  <button type="button" (click)="submitAnonymization()">Submit</button>
+</div>

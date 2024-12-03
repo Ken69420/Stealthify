@@ -1,0 +1,151 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2em;
+}
+
+.description {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.generalization-instruction p {
+  color: #ff0000; /* Example: Change text color to red */
+  font-weight: bold; /* Example: Make text bold */
+  margin-bottom: 10px; /* Example: Add margin below the paragraph */
+  font-size: 0.8em;
+}
+
+.optionDistanceFromHome {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.section input[type="number"],
+.section select {
+  width: 95%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+/* Updated toggle-switch styles */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+}
+
+.toggle-switch label {
+  font-size: 1em; /* Reasonable font size */
+  font-weight: bold; /* Bold text for visibility */
+  color: #333; /* Neutral text color */
+  margin: 0; /* Removes any margin around the label */
+  flex-grow: 1; /* Allows label to take all available space */
+}
+
+.toggle-switch span {
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+}
+
+.toggle-switch input {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.toggle-switch .switch {
+  position: relative;
+  width: 50px; /* Width of the toggle switch */
+  height: 24px; /* Height of the toggle switch */
+  background: #ddd; /* Default background color */
+  border-radius: 24px; /* Makes the toggle fully rounded */
+  cursor: pointer;
+  transition: background 0.3s ease; /* Smooth background color transition */
+  flex-shrink: 0; /* Prevents shrinking of the toggle button */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+}
+
+.toggle-switch input:checked + .switch {
+  background: #4caf50; /* Background color when checked */
+}
+
+.toggle-switch .switch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px; /* Toggle knob width */
+  height: 20px; /* Toggle knob height */
+  background: white; /* Default color for the toggle knob */
+  border-radius: 50%; /* Makes the knob circular */
+  transition: transform 0.3s ease; /* Smooth transition for knob movement */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adds shadow to the knob */
+}
+
+.toggle-switch input:checked + .switch::after {
+  transform: translateX(26px);
+}
+
+/* Input field and dropdown styling */
+.section input[type="number"],
+.section select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.section select {
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Styling for placeholder labels inside sections */
+.section label {
+  font-size: 0.9em;
+  color: #444;
+  margin-top: 10px;
+}

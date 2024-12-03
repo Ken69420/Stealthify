@@ -1,6 +1,90 @@
 <div class="main-layout">
-    <app-menubar></app-menubar>
-    <div class="main-content">
-        <h1>settings works</h1>
+  <app-menubar></app-menubar>
+  <div class="main-content">
+    <div class="p-4 space-y-4 max-w-7xl mx-auto">
+      <div class="flex items-center space-x-4">
+        <input
+          class="max-w-lg"
+          placeholder="Search settings..."
+          type="search"
+        />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="card" (click)="navigateTo('anonymization')">
+          <div class="card-header">
+            <div class="flex items-center space-x-4">
+              <div class="icon-container">
+                <i class="icon-profile"></i>
+              </div>
+              <div>
+                <h3 class="card-title">Anonymization Techniques</h3>
+                <p class="card-description">
+                  Configure techniques used for each data field
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" (click)="navigateTo('security')">
+          <div class="card-header">
+            <div class="flex items-center space-x-4">
+              <div class="icon-container">
+                <i class="icon-security"></i>
+              </div>
+              <div>
+                <h3 class="card-title">Customization Options</h3>
+                <p class="card-description">
+                  Define your own anonymization rules
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" (click)="navigateTo('notifications')">
+          <div class="card-header">
+            <div class="flex items-center space-x-4">
+              <div class="icon-container">
+                <i class="icon-notifications"></i>
+              </div>
+              <div>
+                <h3 class="card-title">Export Data</h3>
+                <p class="card-description">
+                  Configure how you want to export the data
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" (click)="navigateTo('privacy')">
+          <div class="card-header">
+            <div class="flex items-center space-x-4">
+              <div class="icon-container">
+                <i class="icon-privacy"></i>
+              </div>
+              <div>
+                <h3 class="card-title">Compliance and Privacy Settings</h3>
+                <p class="card-description">Check data format compliance</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" (click)="navigateTo('account')">
+          <div class="card-header">
+            <div class="flex items-center space-x-4">
+              <div class="icon-container">
+                <i class="icon-account"></i>
+              </div>
+              <div>
+                <h3 class="card-title">Profiles and Template</h3>
+                <p class="card-description">
+                  Setup your own anonymization profile or choose from the
+                  templates
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

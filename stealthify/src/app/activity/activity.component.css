@@ -1,12 +1,26 @@
-.main-layout{
-    display: flex;
-    padding: 20px;
-    flex-grow: 1;
-    background-color: #ADB5BD;
+.main-layout {
+  display: flex;
+  height: 100vh;
 }
 
-.main-content{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+app-menubar {
+  width: 250px; /* Set a fixed width for the left sidebar */
+  height: 100vh; /* Full height of the viewport to cover left side */
+  position: fixed; /* Fix it in place on the left */
+  top: 0;
+  left: 0;
+  background-color: #343a40; /* Dark background for the menubar */
+  color: #ffffff; /* White text color */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+.main-content {
+  margin-left: 250px; /* Offset by the menubar width */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #adb5bd;
+  padding: 20px;
+  overflow: hidden;
 }

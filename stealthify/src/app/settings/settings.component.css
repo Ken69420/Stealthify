@@ -1,0 +1,160 @@
+.main-layout {
+  display: flex;
+  height: 100vh;
+}
+
+app-menubar {
+  width: 250px; /* Set a fixed width for the left sidebar */
+  height: 100vh; /* Full height of the viewport to cover left side */
+  position: fixed; /* Fix it in place on the left */
+  top: 0;
+  left: 0;
+  background-color: #343a40; /* Dark background for the menubar */
+  color: #ffffff; /* White text color */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+.main-content {
+  margin-left: 250px; /* Offset by the width of the menubar */
+  margin-top: 60px;
+  padding: 20px;
+  padding-top: 200px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  overflow-y: auto; /* Ensure content is scrollable if it overflows */
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-x-4 > * + * {
+  margin-left: 1rem;
+}
+
+.max-w-sm {
+  max-width: 24rem;
+}
+
+.max-w-lg {
+  max-width: 80rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.md\:grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lg\:grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.gap-4 {
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+}
+
+.icon-container {
+  padding: 0.5rem;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.card:hover .icon-container {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+
+.icon-profile::before {
+  content: "\f007"; /* FontAwesome user icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+}
+
+.icon-security::before {
+  content: "\f023"; /* FontAwesome lock icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+}
+
+.icon-notifications::before {
+  content: "\f0f3"; /* FontAwesome bell icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+}
+
+.icon-privacy::before {
+  content: "\f06e"; /* FontAwesome eye icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+}
+
+.icon-account::before {
+  content: "\f2bb"; /* FontAwesome user-cog icon */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #007bff;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.card-description {
+  color: #666;
+  margin: 0;
+}
