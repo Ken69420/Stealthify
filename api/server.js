@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./models/employees");
 const anonymization = require("./routes/anonymization");
 const encryptionRoutes = require("./routes/encryption");
+const decryptionRoutes = require("./routes/decryption");
 
 const app = express();
 const PORT = 3000;
@@ -45,6 +46,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", employeeRoutes); // saving Employee information route
 app.use("/api/anonymization", anonymization); // Anonymization route
 app.use("/api/encryption", encryptionRoutes); // Encryption route
+app.use("/api/decryption", decryptionRoutes); // Decryption route
 
 // Mock activity logs endpoint
 app.get("/api/activity-logs", (req, res) => {

@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { Employee } = require("../models/employees");
 const AnonymizedEmployee = require("../models/anonymizedEmployee");
+const decryptedEmployee = require("../models/decryptedEmployee");
+const encryptedEmployee = require("../models/encryptedEmployee");
+const axios = require("axios");
 
 //Helper functions for anonymization
 
@@ -32,10 +35,20 @@ router.post("/anonymize", async (req, res) => {
     }
 
     //Fetch all employees
-    const employees = await Employee.find({ isAnonymized: { $ne: true } });
+    const encryptedEmployeesList = await encryptedEmployee.find({});
+
+    // Decrypt each employee
+    const decryptedEmployees = [];
+    for (const encryptedEmployee of encryptedEmployeesList) {
+      const response = await axios.post(
+        "http://localhost:3000/api/decryption/decrypt",
+        { employeeId: encryptedEmployee.employeeId }
+      );
+      decryptedEmployees.push(response.data.data);
+    }
 
     //apply anonymization settings
-    const anonymizedEmployees = employees.map((employee) => {
+    const anonymizedEmployees = decryptedEmployees.map((employee) => {
       const anonymizedData = {};
 
       // Pseudonymization
@@ -110,6 +123,11 @@ router.post("/anonymize", async (req, res) => {
     //save anonymized data to the database under AnonymizedEmployee collection
     await AnonymizedEmployee.insertMany(anonymizedEmployees);
 
+    //delete decrypted data
+    await decryptedEmployee.deleteMany({});
+    console.log("Decrypted data deleted successfully");
+
+    console.log("Anonymization completed successfully");
     res.status(201).send({ message: "Anonymization completed successfully." });
   } catch (error) {
     console.error("Error during anonymization:", error.message);

@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { Employee } = require("../models/employees");
 const EncryptedEmployee = require("../models/encryptedEmployee");
+const axios = require("axios");
 
 //Define the transformation functions
 
 const generalTransform = (value, addValue, multiplyValue) => {
-  //convert value to strin g
+  //convert value to string
   const valueAsString = value.toString();
   //remove non-digit characters
   const digitsOnly = valueAsString.replace(/\D/g, "");
@@ -43,44 +44,64 @@ const substitution = (value, type) => {
 };
 
 const rotateEmailCharacters = (text) => {
+  const vowelMap = { a: "4", e: "3", i: "1", o: "0", u: "7" }; // Vowel substitution
+  const alphabetLength = 26;
   return text
     .split("")
     .map((char) => {
-      const rotatedChar = String.fromCharCode(char.charCodeAt(0) + 5);
-      const vowelMap = { a: "4", e: "3", i: "1", o: "0", u: "7" };
+      // Preserve certain characters without transforming them
+      if (
+        char === "@" ||
+        char === "." ||
+        char === "d" ||
+        !/[a-zA-Z]/.test(char)
+      ) {
+        return char; // Leave @, ., d, and non-alphabetic characters unchanged
+      }
+
+      // Transform alphabetic characters with wrapping
+      const charCode = char.charCodeAt(0);
+      const isUpperCase = char >= "A" && char <= "Z";
+      const base = isUpperCase ? 65 : 97; // ASCII codes for 'A' or 'a'
+      const rotatedChar = String.fromCharCode(
+        ((charCode - base + 5) % alphabetLength) + base
+      );
+
+      // Apply vowel substitution if applicable
       return vowelMap[rotatedChar.toLowerCase()] || rotatedChar;
     })
     .join("");
 };
 
 const transformPhoneNo = (phoneNo) => {
-  // Replace numbers with ASCII characters
+  // Replace numbers with ASCII characters (0 => 'a', 1 => 'b', ..., 9 => 'j')
   let asciiPhoneNo = phoneNo
     .split("")
     .map((char) => {
       if (/\d/.test(char)) {
-        return String.fromCharCode(char.charCodeAt(0) + 48);
+        return String.fromCharCode(char.charCodeAt(0) + 49); // Shift by 49 to get 'a' to 'j'
       }
       return char;
     })
     .join("");
 
-  // Shift the digits by 3 positions to the right
+  // Shift the characters by 3 positions to the right
   return asciiPhoneNo.slice(-3) + asciiPhoneNo.slice(0, -3);
 };
 
 const atbashCipher = (text) => {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
-  const reversedAlphabet = alphabet.split("").reverse().join("");
+  const reversedAlphabet = "zyxwvutsrqponmlkjihgfedcba";
+
   return text
     .split("")
     .map((char) => {
       const isUpperCase = char === char.toUpperCase();
       const lowerChar = char.toLowerCase();
       const index = alphabet.indexOf(lowerChar);
-      if (index === -1) {
-        return char; // Non-alphabet characters are not transformed
-      }
+
+      if (index === -1) return char; // Preserve non-alphabet characters
+
       const transformedChar = reversedAlphabet[index];
       return isUpperCase ? transformedChar.toUpperCase() : transformedChar;
     })
@@ -113,12 +134,6 @@ router.post("/encrypt", async (req, res) => {
   console.log("Encryption endpoint reached");
   try {
     const employeeId = req.body.employeeId || "Not Provided";
-    const gender = req.body.gender || "Not Provided";
-    const maritalStatus = req.body.maritalStatus || "Not Provided";
-
-    console.log("Employee ID:", employeeId);
-    console.log("gender: ", gender);
-    console.log("maritalStatus:", maritalStatus);
 
     if (!employeeId) {
       return res.status(400).json({ error: "Employee ID is required" });
@@ -127,7 +142,7 @@ router.post("/encrypt", async (req, res) => {
     // Find the employee by their ID
     const employee = await Employee.findOne({ employeeId });
     if (!employee) {
-      return res.status(404).json({ error: "Employee not found" });
+      throw new Error("Employee not found");
     }
 
     const fieldTransformation = {
@@ -138,7 +153,7 @@ router.post("/encrypt", async (req, res) => {
       phoneNo: transformPhoneNo,
       department: atbashCipher,
       jobRole: atbashCipher,
-      educationField: rotateEmailCharacters,
+      educationField: atbashCipher,
       distanceFromHome: (value) => generalTransform(value, 3, 2),
       attrition: transformAttrition,
       environmentSatisfactory: (value) => generalTransform(value, 5, 27),
@@ -158,27 +173,17 @@ router.post("/encrypt", async (req, res) => {
     for (const [field, value] of Object.entries(req.body)) {
       if (fieldTransformation[field]) {
         encryptedData[field] = fieldTransformation[field](value);
-        console.log(
-          `Transforming ${field}: Original: ${value}, Transformed: ${encryptedData[field]}`
-        );
       }
     }
 
-    console.log("Transformed encrypted data:", encryptedData);
-
     const encryptedEmployee = new EncryptedEmployee(encryptedData);
-    console.log("EncryptedEmployee instance before saving:", encryptedEmployee);
+    await encryptedEmployee.save();
 
-    try {
-      await encryptedEmployee.save();
-      console.log("Encrypted data saved successfully:", encryptedEmployee);
-    } catch (error) {
-      console.error("Error saving encrypted data:", error.message);
-    }
-
-    res
-      .status(201)
-      .send({ message: "Encrypted employee data saved successfully" });
+    await Employee.findOneAndDelete({ employeeId });
+    res.status(201).send({
+      message: "Encrypted employee data saved and original data deleted",
+    });
+    console.log("Encrypted employee data saved and original data deleted");
   } catch (error) {
     console.error("Error saving encrypted employee data:", error.message);
     res

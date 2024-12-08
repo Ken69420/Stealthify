@@ -84,16 +84,50 @@ router.post("/employees/upload", upload.single("file"), (req, res) => {
           results.push(data);
         })
         .on("end", async () => {
-          console.log("CSV parsing completed. Parsed data:", results); // Log the parsed data
+          console.log("CSV parsing completed. Parsed data:", results);
           try {
-            await Employee.insertMany(results);
-            fs.unlinkSync(filePath); // Remove the file after processing
-            console.log("CSV data imported successfully");
-            res.status(201).send({ message: "CSV data imported successfully" });
+            // Insert all data into the database
+            const insertedEmployees = await Employee.insertMany(results);
+            console.log("Employees inserted:", insertedEmployees);
+
+            // Encrypt and delete original records for each employee
+            for (const employee of insertedEmployees) {
+              try {
+                // Trigger encryption
+                const encryptionResponse = await axios.post(
+                  "http://localhost:3000/api/encryption/encrypt",
+                  employee
+                );
+
+                console.log(
+                  `Encryption process completed for Employee ID: ${employee.employeeId}`
+                );
+
+                // Delete the original record
+                await Employee.deleteOne({ _id: employee._id });
+                console.log(
+                  `Original record deleted for Employee ID: ${employee.employeeId}`
+                );
+              } catch (error) {
+                console.error(
+                  `Error during encryption or deletion for Employee ID: ${employee.employeeId}`,
+                  error.message
+                );
+              }
+            }
+
+            // Delete the uploaded CSV file after processing
+            fs.unlinkSync(filePath);
+            console.log("CSV file removed after processing.");
+
+            res.status(201).send({
+              message:
+                "CSV data imported, encrypted, and original data deleted successfully.",
+            });
           } catch (error) {
             console.error("Error importing CSV data:", error.message);
             res
-              .status(400)
+              .status(500)
               .send({ message: "Error importing CSV data", error });
           }
         })
@@ -115,27 +149,7 @@ router.post("/employees/save", async (req, res) => {
     // Trigger encryption after saving the employee
     const encryptionResponse = await axios.post(
       "http://localhost:3000/api/encryption/encrypt",
-      {
-        employeeId: employee.employeeId,
-        gender: employee.gender,
-        maritalStatus: employee.maritalStatus,
-        email: employee.email,
-        phoneNo: employee.phoneNo,
-        department: employee.department,
-        distanceFromHome: employee.distanceFromHome,
-        educationField: employee.educationField,
-        attrition: employee.attrition,
-        environmentSatisfactory: employee.environmentSatisfactory,
-        jobSatisfaction: employee.jobSatisfaction,
-        performanceRating: employee.performanceRating,
-        numberOfCompaniesWorked: employee.numberOfCompaniesWorked,
-        totalWorkingYears: employee.totalWorkingYears,
-        trainingTimesLastYear: employee.trainingTimesLastYear,
-        yearsAtCompany: employee.yearsAtCompany,
-        yearsInCurrentRole: employee.yearsInCurrentRole,
-        yearsSinceLastPromotion: employee.yearsSinceLastPromotion,
-        yearsWithCurrentManager: employee.yearsWithCurrentManager,
-      }
+      employee
     );
 
     console.log(
