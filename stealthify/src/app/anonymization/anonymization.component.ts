@@ -32,6 +32,11 @@ interface Settings {
     prefix: string;
     randomStrength: number;
   };
+  labelEncoding: {
+    enabled: boolean;
+    gender: boolean;
+    maritalStatus: boolean;
+  };
 }
 
 @Component({
@@ -70,6 +75,11 @@ export class AnonymizationComponent {
       enabled: false,
       prefix: 'EMP',
       randomStrength: 1,
+    },
+    labelEncoding: {
+      enabled: false,
+      gender: false,
+      maritalStatus: false,
     },
   };
 

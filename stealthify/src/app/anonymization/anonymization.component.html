@@ -168,7 +168,7 @@
       </div>
 
       <div *ngIf="settings.rounding.enabled">
-        <div class="optionDistanceFromHome">
+        <div class="checkboxlabel">
           <label for="distanceFromHome">Distance From Home (in KM)</label>
           <input
             id="distanceFromHome"
@@ -215,6 +215,41 @@
         />
       </div>
     </div>
+
+    <!-- Label Encoding Section -->
+    <div class="section">
+      <div class="toggle-switch">
+        <label for="labelEncodingToggle">Label Encoding</label>
+        <input
+          id="labelEncodingToggle"
+          type="checkbox"
+          [(ngModel)]="settings.labelEncoding.enabled"
+          (change)="
+            toggleStatus('Label Encoding', settings.labelEncoding.enabled)
+          "
+        />
+        <span class="switch"></span>
+      </div>
+
+      <div *ngIf="settings.labelEncoding.enabled">
+        <div class="checkboxlabel">
+          <label for="gender">Gender</label>
+          <input
+            id="gender"
+            type="checkbox"
+            [(ngModel)]="settings.labelEncoding.gender"
+          />
+        </div>
+        <div class="checkboxlabel">
+          <label for="maritalStatus">Marital Status</label>
+          <input
+            id="maritalStatus"
+            type="checkbox"
+            [(ngModel)]="settings.labelEncoding.maritalStatus"
+          />
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="submitAnonymization()">Submit</button>
   </div>
-  <button type="button" (click)="submitAnonymization()">Submit</button>
 </div>

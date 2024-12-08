@@ -8,8 +8,20 @@ const axios = require("axios");
 
 //Helper functions for anonymization
 
-const pseudonymize = (value1) =>
-  `UID${Math.floor(100000 + Math.random() * 900000)}`;
+const pseudonymize = (value, prefix, randomLevel) => {
+  prefix = prefix || "UID";
+  randomnessLevel = randomLevel || 1;
+
+  const ranges = {
+    1: [1000, 9999], // Low randomness
+    2: [10000, 99999], // Medium randomness
+    3: [100000, 999999], // High randomness
+  };
+
+  const [min, max] = ranges[randomnessLevel] || ranges[1]; //Default to level 1 range
+  return `${prefix}${Math.floor(min + Math.random() * (max - min + 1))}`;
+};
+
 const generalizeValue = (value, range) => {
   const min = Math.floor(value / range) * range;
   const max = min + range - 1;
@@ -17,10 +29,56 @@ const generalizeValue = (value, range) => {
 };
 const maskEmail = (email, visibleCharacters) => {
   const [localPart, domain] = email.split("@");
-  return `${localPart.slice(0, visibleCharacters)}***@${domain}`;
+
+  //If visiblecharacters is greater than the length of the local part, adjust it
+  visibleCharacters = Math.max(
+    0,
+    Math.min(visibleCharacters, localPart.length)
+  );
+
+  //Create the masked email
+  const maskedLocalPart =
+    "*".repeat(localPart.length - visibleCharacters) +
+    localPart.slice(localPart.length - visibleCharacters);
+
+  return `${maskedLocalPart}@${domain}`;
 };
+
 const maskPhone = (phone, hiddenDigits) => {
-  return `${"*".repeat(hiddenDigits)}${phone.slice(-4)}`;
+  //Ensure hiddenDigits dont exceed the length of the phone number
+  hiddenDigits = Math.max(0, Math.min(hiddenDigits, phone.length));
+
+  //Mask the last hiddenDigits of the phone number
+  return `${phone.slice(0, phone.length - hiddenDigits)}${"*".repeat(
+    hiddenDigits
+  )}`;
+};
+
+const roundDistance = (distance) => {
+  return Math.round(distance / 5) * 5;
+};
+
+const labelEncoding = (value, type) => {
+  switch (type) {
+    case "gender":
+      switch (value.toLowerCase()) {
+        case "male":
+          return 1;
+        case "female":
+          return 2;
+        default:
+          return 0;
+      }
+    case "maritalStatus":
+      switch (value.toLowerCase()) {
+        case "single":
+          return 0;
+        case "married":
+          return 1;
+        default:
+          return 2;
+      }
+  }
 };
 
 //Endpoint to anonymize employee data
@@ -53,7 +111,11 @@ router.post("/anonymize", async (req, res) => {
 
       // Pseudonymization
       if (settings.pseudonymization?.enabled) {
-        anonymizedData.employeeId = pseudonymize(employee.employeeId);
+        anonymizedData.employeeId = pseudonymize(
+          employee.employeeId,
+          settings.pseudonymization.prefix,
+          settings.pseudonymization.randomStrength
+        );
       }
 
       // Generalization
@@ -105,13 +167,29 @@ router.post("/anonymize", async (req, res) => {
         }
       }
 
+      //rounding
+      if (settings.rounding?.enabled) {
+        anonymizedData.distanceFromHome = roundDistance(
+          employee.distanceFromHome
+        );
+      }
+
+      if (settings.labelEncoding?.enabled) {
+        if (settings.labelEncoding.gender) {
+          anonymizedData.gender = labelEncoding(employee.gender, "gender");
+        }
+        if (settings.labelEncoding.maritalStatus) {
+          anonymizedData.maritalStatus = labelEncoding(
+            employee.maritalStatus,
+            "maritalStatus"
+          );
+        }
+      }
+
       // Preserve non-anonymized fields if needed
-      anonymizedData.gender = employee.gender;
-      anonymizedData.maritalStatus = employee.maritalStatus;
       anonymizedData.department = employee.department;
       anonymizedData.jobRole = employee.jobRole;
       anonymizedData.educationField = employee.educationField;
-      anonymizedData.distanceFromHome = employee.distanceFromHome;
       anonymizedData.attrition = employee.attrition;
       anonymizedData.environmentSatisfactory = employee.environmentSatisfactory;
       anonymizedData.jobSatisfaction = employee.jobSatisfaction;
