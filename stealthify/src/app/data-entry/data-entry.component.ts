@@ -1,48 +1,53 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { MenubarComponent } from '../menubar/menubar.component';
 
 @Component({
   selector: 'app-data-entry',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule, MenubarComponent],
   templateUrl: './data-entry.component.html',
-  styleUrl: './data-entry.component.css',
 })
 export class DataEntryComponent {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  employeeId: string = '';
-  gender: string = '';
-  maritalStatus: string = '';
-  email: string = '';
-  phoneNo: string = '';
-  department: string = '';
-  jobRole: string = '';
-  educationField: string = '';
-  distanceFromHome: number = 0;
-  attrition: string = '';
-  environmentSatisfactory: number = 0;
-  jobSatisfaction: number = 0;
-  performanceRating: number = 0;
-  numberOfCompaniesWorked: number = 0;
-  totalWorkingYears: number = 0;
-  trainingTimesLastYear: number = 0;
-  yearsAtCompany: number = 0;
-  yearsInCurrentRole: number = 0;
-  yearsSinceLastPromotion: number = 0;
-  yearsWithCurrentManager: number = 0;
   message: string = '';
   selectedFile: File | null = null;
 
-  constructor(private http: HttpClient) {}
+  formData: Record<string, any> = {
+    employeeId: '',
+    gender: '',
+    maritalStatus: '',
+    email: '',
+    phoneNo: '',
+    department: '',
+    jobRole: '',
+    educationField: '',
+    distanceFromHome: 0,
+    attrition: '',
+    environmentSatisfactory: 0,
+    jobSatisfaction: 0,
+    performanceRating: 0,
+    numberOfCompaniesWorked: 0,
+    totalWorkingYears: 0,
+    trainingTimesLastYear: 0,
+    yearsAtCompany: 0,
+    yearsInCurrentRole: 0,
+    yearsSinceLastPromotion: 0,
+    yearsWithCurrentManager: 0,
+  };
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
-    console.log('File selected:', this.selectedFile); // Log the selected file
+    console.log('File selected:', this.selectedFile);
 
     if (this.selectedFile) {
-      this.onImport();
+      this.uploadFile();
     }
   }
 
@@ -50,7 +55,7 @@ export class DataEntryComponent {
     this.fileInput.nativeElement.click();
   }
 
-  onImport() {
+  uploadFile() {
     if (!this.selectedFile) {
       this.message = 'Please select a file first.';
       return;
@@ -59,57 +64,58 @@ export class DataEntryComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    console.log('Sending file to server:', this.selectedFile); // Log the file being sent
-
     this.http
       .post('http://localhost:3000/api/employees/upload', formData)
       .subscribe(
         (response: any) => {
-          console.log('Response from the server:', response); // Log the response
-          this.message = response.message;
+          console.log('Response from server:', response);
+          this.message = response.message || 'File uploaded successfully.';
         },
         (error) => {
           console.error('Error importing CSV data:', error);
-          this.message = 'Error importing CSV data.';
+          this.message = 'Error uploading CSV data.';
         }
       );
   }
 
-  onSubmit() {
-    const employeeData = {
-      employeeId: this.employeeId,
-      gender: this.gender,
-      maritalStatus: this.maritalStatus,
-      email: this.email,
-      phoneNo: this.phoneNo,
-      department: this.department,
-      jobRole: this.jobRole,
-      educationField: this.educationField,
-      distanceFromHome: this.distanceFromHome,
-      attrition: this.attrition,
-      environmentSatisfactory: this.environmentSatisfactory,
-      jobSatisfaction: this.jobSatisfaction,
-      performanceRating: this.performanceRating,
-      numberOfCompaniesWorked: this.numberOfCompaniesWorked,
-      totalWorkingYears: this.totalWorkingYears,
-      trainingTimesLastYear: this.trainingTimesLastYear,
-      yearsAtCompany: this.yearsAtCompany,
-      yearsInCurrentRole: this.yearsInCurrentRole,
-      yearsSinceLastPromotion: this.yearsSinceLastPromotion,
-      yearsWithCurrentManager: this.yearsWithCurrentManager,
-    };
-
+  submitForm() {
     this.http
-      .post('http://localhost:3000/api/employees/save', employeeData)
+      .post('http://localhost:3000/api/employees/save', this.formData)
       .subscribe(
         (response: any) => {
-          console.log('Employee data saved and encrypted:', response);
-          this.message = 'Employee data saved and encrypted successfully.';
+          console.log('Employee data saved:', response);
+          this.message = 'Employee data saved successfully.';
+          this.resetForm();
         },
         (error) => {
-          console.error('Error saving and encrypting employee data:', error);
-          this.message = 'Error saving and encrypting employee data.';
+          console.error('Error saving employee data:', error);
+          this.message = 'Error saving employee data.';
         }
       );
+  }
+
+  resetForm() {
+    this.formData = {
+      employeeId: '',
+      gender: '',
+      maritalStatus: '',
+      email: '',
+      phoneNo: '',
+      department: '',
+      jobRole: '',
+      educationField: '',
+      distanceFromHome: 0,
+      attrition: '',
+      environmentSatisfactory: 0,
+      jobSatisfaction: 0,
+      performanceRating: 0,
+      numberOfCompaniesWorked: 0,
+      totalWorkingYears: 0,
+      trainingTimesLastYear: 0,
+      yearsAtCompany: 0,
+      yearsInCurrentRole: 0,
+      yearsSinceLastPromotion: 0,
+      yearsWithCurrentManager: 0,
+    };
   }
 }

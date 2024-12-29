@@ -1,255 +1,357 @@
-<div class="container">
-  <h1>Stealthify Settings</h1>
-  <p class="description">
-    Customize your anonymization preferences to suit your data privacy needs.
-  </p>
+<div
+  class="main-layout bg-gray-200 bg-custom-bg bg-center bg-cover min-h-screen"
+>
+  <app-menubar></app-menubar>
+  <div class="container py-20 mx-auto px-6">
+    <h1 class="text-4xl font-extrabold text-gray-900 mb-6">
+      Stealthify Settings
+    </h1>
+    <p class="description text-gray-600 mb-8">
+      Customize your anonymization preferences to suit your data privacy needs.
+    </p>
 
-  <div class="card">
-    <h2>Anonymization Techniques</h2>
-    <p>Configure various anonymization methods for your data.</p>
+    <div class="card bg-white shadow-lg rounded-lg p-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4 pb-6">
+        Anonymization Techniques
+      </h2>
 
-    <!-- Masking Section -->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="maskingToggle">Masking</label>
-        <input
-          id="maskingToggle"
-          type="checkbox"
-          [(ngModel)]="settings.masking.enabled"
-          (change)="toggleStatus('Masking', settings.masking.enabled)"
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.masking.enabled">
-        <label for="emailCharactersToShow">Email characters to show</label>
-        <input
-          id="emailCharactersToShow"
-          type="number"
-          [(ngModel)]="settings.masking.emailCharactersToShow"
-          min="0"
-        />
-
-        <label for="phoneDigitsToHide">Phone digits to hide</label>
-        <input
-          id="phoneDigitsToHide"
-          type="number"
-          [(ngModel)]="settings.masking.phoneDigitsToHide"
-          min="0"
-        />
-      </div>
-    </div>
-
-    <!-- Substitution Section -->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="substitutionToggle">Substitution</label>
-        <input
-          id="substitutionToggle"
-          type="checkbox"
-          [(ngModel)]="settings.substitution.enabled"
-          (change)="toggleStatus('Substitution', settings.substitution.enabled)"
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.substitution.enabled">
-        <label for="nameDataset">Name dataset</label>
-        <select id="nameDataset" [(ngModel)]="settings.substitution.dataset">
-          <option *ngFor="let dataset of datasets" [value]="dataset">
-            {{ dataset }}
-          </option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Generalization Section -->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="generalizationToggle">Generalization</label>
-        <input
-          id="generalizationToggle"
-          type="checkbox"
-          [(ngModel)]="settings.generalization.enabled"
-          (change)="
-            toggleStatus('Generalization', settings.generalization.enabled)
-          "
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.generalization.enabled">
-        <div class="generalization-instruction">
-          <p>Insert 0 to show original data</p>
+      <!-- Masking Section -->
+      <div class="section mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="maskingToggle" class="text-gray-800 font-bold"
+            >Masking</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full transition [-webkit-tap-highlight-color:_transparent] bg-gray-300 peer-checked:bg-[#1976D2]"
+          >
+            <input
+              type="checkbox"
+              id="maskingToggle"
+              class="peer sr-only"
+              [(ngModel)]="settings.masking.enabled"
+              (change)="toggleStatus('Masking', settings.masking.enabled)"
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
         </div>
-        <label for="numberOfCompaniesWorked"
-          >Number Of Companies Worked (Range in Years)</label
-        >
-        <input
-          id="numberOfCompaniesWorked"
-          type="number"
-          [(ngModel)]="settings.generalization.numberOfCompanies"
-          min="0"
-        />
-
-        <label for="totalWorkingYears"
-          >Total of Working Years (Range in Years)</label
-        >
-        <input
-          id="totalWorkingYears"
-          type="number"
-          [(ngModel)]="settings.generalization.totalWorkingYears"
-          min="0"
-        />
-
-        <label for="trainingTimesLastYear"
-          >Training Times Last Year (Range in amount)</label
-        >
-        <input
-          id="trainingTimesLastYear"
-          type="number"
-          [(ngModel)]="settings.generalization.trainingTimesLastYear"
-          min="0"
-        />
-
-        <label for="yearsAtCompany"
-          >Years at current Company (Range in Year)</label
-        >
-        <input
-          id="yearsAtCompany"
-          type="number"
-          [(ngModel)]="settings.generalization.yearsAtCompany"
-          min="0"
-        />
-
-        <label for="yearsInCurrentRole"
-          >Years in current role (Range in Year)</label
-        >
-        <input
-          id="yearsInCurrentRole"
-          type="number"
-          [(ngModel)]="settings.generalization.yearsInCurrentRole"
-          min="0"
-        />
-
-        <label for="yearsSinceLastPromotion"
-          >Year since last promotion (Range in Year)</label
-        >
-        <input
-          id="yearsSinceLastPromotion"
-          type="number"
-          [(ngModel)]="settings.generalization.yearsSinceLastPromotion"
-          min="0"
-        />
-
-        <label for="yearsWithCurrentManager"
-          >Years with current manager (Range in Year)</label
-        >
-        <input
-          id="yearsWithCurrentManager"
-          type="number"
-          [(ngModel)]="settings.generalization.yearsWithCurrManager"
-          min="0"
-        />
-      </div>
-    </div>
-
-    <!-- Rounding Section -->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="roundingToggle">Rounding</label>
-        <input
-          id="roundingToggle"
-          type="checkbox"
-          [(ngModel)]="settings.rounding.enabled"
-          (change)="toggleStatus('rounding', settings.rounding.enabled)"
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.rounding.enabled">
-        <div class="checkboxlabel">
-          <label for="distanceFromHome">Distance From Home (in KM)</label>
+        <div *ngIf="settings.masking.enabled" class="grid gap-4">
+          <label for="emailCharactersToShow" class="block text-gray-600 mb-1"
+            >Email characters to show</label
+          >
           <input
-            id="distanceFromHome"
-            type="checkbox"
-            [(ngModel)]="settings.rounding.distanceFromHome"
+            id="emailCharactersToShow"
+            type="number"
+            [(ngModel)]="settings.masking.emailCharactersToShow"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="phoneDigitsToHide" class="block text-gray-600 mb-1"
+            >Phone digits to hide</label
+          >
+          <input
+            id="phoneDigitsToHide"
+            type="number"
+            [(ngModel)]="settings.masking.phoneDigitsToHide"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
           />
         </div>
       </div>
-    </div>
 
-    <!-- Pseudonymization Section-->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="pseudonymizationToggle">Pseudonymization</label>
-        <input
-          id="pseudonymizationToggle"
-          type="checkbox"
-          [(ngModel)]="settings.pseudonymization.enabled"
-          (change)="
-            toggleStatus('Pseudonymization', settings.pseudonymization.enabled)
-          "
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.pseudonymization.enabled">
-        <label for="prefix">Set the prefix for your data</label>
-        <input
-          id="prefix"
-          type="text"
-          [(ngModel)]="settings.pseudonymization.prefix"
-        />
-
-        <label for="randomStrength"
-          >Set the level of randomness to your data (1 - Low, 2 - Medium, 3 -
-          High)</label
-        >
-        <input
-          id="randomStrength"
-          type="number"
-          [(ngModel)]="settings.pseudonymization.randomStrength"
-          min="1"
-          max="3"
-        />
-      </div>
-    </div>
-
-    <!-- Label Encoding Section -->
-    <div class="section">
-      <div class="toggle-switch">
-        <label for="labelEncodingToggle">Label Encoding</label>
-        <input
-          id="labelEncodingToggle"
-          type="checkbox"
-          [(ngModel)]="settings.labelEncoding.enabled"
-          (change)="
-            toggleStatus('Label Encoding', settings.labelEncoding.enabled)
-          "
-        />
-        <span class="switch"></span>
-      </div>
-
-      <div *ngIf="settings.labelEncoding.enabled">
-        <div class="checkboxlabel">
-          <label for="gender">Gender</label>
-          <input
-            id="gender"
-            type="checkbox"
-            [(ngModel)]="settings.labelEncoding.gender"
-          />
+      <!-- Substitution Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="substitutionToggle" class="text-gray-800 font-bold"
+            >Substitution</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] peer-checked:bg-[#1976D2]"
+          >
+            <input
+              id="substitutionToggle"
+              type="checkbox"
+              class="peer sr-only"
+              [(ngModel)]="settings.substitution.enabled"
+              (change)="
+                toggleStatus('Substitution', settings.substitution.enabled)
+              "
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
         </div>
-        <div class="checkboxlabel">
-          <label for="maritalStatus">Marital Status</label>
-          <input
-            id="maritalStatus"
-            type="checkbox"
-            [(ngModel)]="settings.labelEncoding.maritalStatus"
-          />
+
+        <div *ngIf="settings.substitution.enabled">
+          <label for="nameDataset" class="block text-gray-600 mb-1"
+            >Name dataset</label
+          >
+          <select
+            id="nameDataset"
+            [(ngModel)]="settings.substitution.dataset"
+            class="form-select w-full border border-black rounded-sm"
+          >
+            <option *ngFor="let dataset of datasets" [value]="dataset">
+              {{ dataset }}
+            </option>
+          </select>
         </div>
       </div>
+
+      <!-- Generalization Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="generalizationToggle" class="text-gray-800 font-bold"
+            >Generalization</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] peer-checked:bg-[#1976D2]"
+          >
+            <input
+              id="generalizationToggle"
+              type="checkbox"
+              class="peer sr-only"
+              [(ngModel)]="settings.generalization.enabled"
+              (change)="
+                toggleStatus('Generalization', settings.generalization.enabled)
+              "
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
+        </div>
+
+        <div *ngIf="settings.generalization.enabled">
+          <div class="generalization-instruction">
+            <p>Insert 0 to show original data</p>
+          </div>
+          <label
+            for="numberOfCompaniesWorked"
+            class="block text-gray-600 mb-1 mt-2"
+            >Number Of Companies Worked (Range in Years)</label
+          >
+          <input
+            id="numberOfCompaniesWorked"
+            type="number"
+            [(ngModel)]="settings.generalization.numberOfCompanies"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="totalWorkingYears" class="block text-gray-600 mb-1"
+            >Total of Working Years (Range in Years)</label
+          >
+          <input
+            id="totalWorkingYears"
+            type="number"
+            [(ngModel)]="settings.generalization.totalWorkingYears"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="trainingTimesLastYear" class="block text-gray-600 mb-1"
+            >Training Times Last Year (Range in amount)</label
+          >
+          <input
+            id="trainingTimesLastYear"
+            type="number"
+            [(ngModel)]="settings.generalization.trainingTimesLastYear"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="yearsAtCompany" class="block text-gray-600 mb-1"
+            >Years at current Company (Range in Year)</label
+          >
+          <input
+            id="yearsAtCompany"
+            type="number"
+            [(ngModel)]="settings.generalization.yearsAtCompany"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="yearsInCurrentRole" class="block text-gray-600 mb-1"
+            >Years in current role (Range in Year)</label
+          >
+          <input
+            id="yearsInCurrentRole"
+            type="number"
+            [(ngModel)]="settings.generalization.yearsInCurrentRole"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="yearsSinceLastPromotion" class="block text-gray-600 mb-1"
+            >Year since last promotion (Range in Year)</label
+          >
+          <input
+            id="yearsSinceLastPromotion"
+            type="number"
+            [(ngModel)]="settings.generalization.yearsSinceLastPromotion"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+
+          <label for="yearsWithCurrentManager" class="block text-gray-600 mb-1"
+            >Years with current manager (Range in Year)</label
+          >
+          <input
+            id="yearsWithCurrentManager"
+            type="number"
+            [(ngModel)]="settings.generalization.yearsWithCurrManager"
+            min="0"
+            class="text-center form-input w-12 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md"
+          />
+        </div>
+      </div>
+
+      <!-- Rounding Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="roundingToggle" class="text-gray-800 font-bold"
+            >Rounding</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] peer-checked:bg-[#1976D2]"
+          >
+            <input
+              id="roundingToggle"
+              type="checkbox"
+              class="peer sr-only"
+              [(ngModel)]="settings.rounding.enabled"
+              (change)="toggleStatus('rounding', settings.rounding.enabled)"
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
+        </div>
+
+        <div *ngIf="settings.rounding.enabled">
+          <div class="flex items-center space-x-2">
+            <label> Distance From Home (in KM) </label>
+            <input
+              id="distanceFromHome"
+              type="checkbox"
+              [(ngModel)]="settings.rounding.distanceFromHome"
+              class="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-4 h-4"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Pseudonymization Section-->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="pseudonymizationToggle" class="text-gray-800 font-bold"
+            >Pseudonymization</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] peer-checked:bg-[#1976D2]"
+          >
+            <input
+              id="pseudonymizationToggle"
+              type="checkbox"
+              class="peer sr-only"
+              [(ngModel)]="settings.pseudonymization.enabled"
+              (change)="
+                toggleStatus(
+                  'Pseudonymization',
+                  settings.pseudonymization.enabled
+                )
+              "
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
+        </div>
+
+        <div *ngIf="settings.pseudonymization.enabled">
+          <label for="prefix" class="block text-gray-600 mb-1"
+            >Set the prefix for your data</label
+          >
+          <input
+            id="prefix"
+            type="text"
+            [(ngModel)]="settings.pseudonymization.prefix"
+            class="text-center mb-2 form-input w-half border border-black focus:border-blue-500 focus:ring-blue-500 rounded-md"
+          />
+
+          <label for="randomStrength" class="block text-gray-600 mb-1"
+            >Set the level of randomness to your data (1 - Low, 2 - Medium, 3 -
+            High)</label
+          >
+          <input
+            id="randomStrength"
+            type="number"
+            [(ngModel)]="settings.pseudonymization.randomStrength"
+            min="1"
+            max="3"
+            class="text-center mb-2 form-input w-10 border border-black focus:border-blue-500 focus:ring-blue-500 rounded-md"
+          />
+        </div>
+      </div>
+
+      <!-- Label Encoding Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <label for="labelEncodingToggle" class="text-gray-800 font-bold"
+            >Label Encoding</label
+          >
+          <label
+            class="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-300 transition [-webkit-tap-highlight-color:_transparent] peer-checked:bg-[#1976D2]"
+          >
+            <input
+              id="labelEncodingToggle"
+              type="checkbox"
+              class="peer sr-only"
+              [(ngModel)]="settings.labelEncoding.enabled"
+              (change)="
+                toggleStatus('Label Encoding', settings.labelEncoding.enabled)
+              "
+            />
+            <span
+              class="absolute inset-y-0 start-0 m-1 h-5 w-5 rounded-full bg-white ring-[5px] ring-inset ring-gray-300 transition-all peer-checked:translate-x-[20px] peer-checked:ring-transparent"
+            ></span>
+          </label>
+        </div>
+
+        <div *ngIf="settings.labelEncoding.enabled">
+          <div class="flex items-center space-x-2">
+            <label for="gender" class="block text-gray-600 mb-1">Gender</label>
+            <input
+              id="gender"
+              type="checkbox"
+              [(ngModel)]="settings.labelEncoding.gender"
+              class="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-4 h-4"
+            />
+          </div>
+          <div class="flex items-center space-x-2">
+            <label for="maritalStatus" class="block text-gray-600 mb-1"
+              >Marital Status</label
+            >
+            <input
+              id="maritalStatus"
+              type="checkbox"
+              [(ngModel)]="settings.labelEncoding.maritalStatus"
+              class="dark:border-white-400/20 dark:scale-100 transition-all duration-500 ease-in-out dark:hover:scale-110 dark:checked:scale-100 w-4 h-4"
+            />
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        class="bg-blue-600 text-white py-2 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        (click)="submitAnonymization()"
+      >
+        Submit
+      </button>
     </div>
-    <button type="button" (click)="submitAnonymization()">Submit</button>
   </div>
 </div>

@@ -1,9 +1,168 @@
-<div class="main-layout">
-    <app-menubar></app-menubar>
-    <div class="main-content">
-        <div *ngIf="dataFromBackend">
-            <p>{{ dataFromBackend }}</p>
-          </div>          
-        <router-outlet></router-outlet>
+<div
+  class="main-layout bg-custom-bg bg-cover bg-center min-h-screen flex flex-col"
+>
+  <!-- Menubar -->
+  <app-menubar></app-menubar>
+
+  <!-- Main Content -->
+  <div
+    class="main-content container mx-auto px-6 py-10 bg-white/80 rounded-lg shadow-lg mt-20"
+    style="backdrop-filter: blur(10px)"
+  >
+    <!-- Page Header -->
+    <h1 class="text-4xl font-bold text-gray-800 mb-10 text-center">
+      Dashboard
+    </h1>
+
+    <!-- Action Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <!-- Data Entry Card -->
+      <a
+        routerLink="/data-entry"
+        class="group transform hover:scale-105 transition"
+      >
+        <div
+          class="border border-gray-300 bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="text-blue-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="32px"
+                viewBox="0 -960 960 960"
+                width="32px"
+                fill="currentColor"
+              >
+                <path
+                  d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-bold text-gray-800 group-hover:text-blue-500"
+              >
+                Data-Entry
+              </h2>
+              <p class="text-sm text-gray-600">
+                Enter and manage employee data
+              </p>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Anonymization Card -->
+      <a
+        routerLink="/anonymization"
+        class="group transform hover:scale-105 transition"
+      >
+        <div
+          class="border border-gray-300 bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="text-green-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="32px"
+                viewBox="0 -960 960 960"
+                width="32px"
+                fill="currentColor"
+              >
+                <path
+                  d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-bold text-gray-800 group-hover:text-green-500"
+              >
+                Anonymization
+              </h2>
+              <p class="text-sm text-gray-600">
+                Anonymize sensitive employee data
+              </p>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- De-Anonymization Card -->
+      <a
+        routerLink="/deanonymization"
+        class="group transform hover:scale-105 transition"
+      >
+        <div
+          class="border border-gray-300 bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition"
+        >
+          <div class="flex items-center space-x-4">
+            <div class="text-red-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="32px"
+                viewBox="0 -960 960 960"
+                width="32px"
+                fill="currentColor"
+              >
+                <path
+                  d="M240-640h360v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85h-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640Zm0 480h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM240-160v-400 400Z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2
+                class="text-lg font-bold text-gray-800 group-hover:text-red-500"
+              >
+                De-Anonymization
+              </h2>
+              <p class="text-sm text-gray-600">
+                Restore anonymized data into its original form
+              </p>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
+
+    <!-- Quick Stats -->
+    <div class="border border-gray-300 bg-white rounded-lg p-6 shadow-md">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6 mr-2 text-gray-800"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 3h18M3 7h18M3 11h18M3 15h18M3 19h18"
+          />
+        </svg>
+        Quick Stats
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-100 rounded-lg p-6">
+          <h3 class="text-gray-600 font-medium mb-2">Total Employees</h3>
+          <p class="text-4xl font-bold text-gray-800">1,234</p>
+        </div>
+        <div class="bg-gray-100 rounded-lg p-6">
+          <h3 class="text-gray-600 font-medium mb-2">Department</h3>
+          <p class="text-4xl font-bold text-gray-800">12</p>
+        </div>
+        <div class="bg-gray-100 rounded-lg p-6">
+          <h3 class="text-gray-600 font-medium mb-2">Avg. Satisfaction</h3>
+          <p class="text-4xl font-bold text-gray-800">7.8</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-12 text-gray-500 text-sm">
+      &copy; 2024 Stealthify. All rights reserved.
+    </footer>
+  </div>
 </div>

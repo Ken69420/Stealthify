@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -9,6 +10,7 @@ const employeeRoutes = require("./models/employees");
 const anonymization = require("./routes/anonymization");
 const encryptionRoutes = require("./routes/encryption");
 const decryptionRoutes = require("./routes/decryption");
+const deanonymizationRoutes = require("./routes/deanonymization");
 
 const app = express();
 const PORT = 3000;
@@ -47,6 +49,8 @@ app.use("/api", employeeRoutes); // saving Employee information route
 app.use("/api/anonymization", anonymization); // Anonymization route
 app.use("/api/encryption", encryptionRoutes); // Encryption route
 app.use("/api/decryption", decryptionRoutes); // Decryption route
+app.use("/api/deanonymization", deanonymizationRoutes); //Deanonymization route
+app.use("/downloads", express.static(path.join(__dirname, "downloads")));
 
 // Mock activity logs endpoint
 app.get("/api/activity-logs", (req, res) => {

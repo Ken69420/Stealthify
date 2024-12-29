@@ -16,10 +16,14 @@
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
     "express": "^4.21.0",
+    "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.15",
     "speakeasy": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/json2csv": "^5.0.7"
   }
 }

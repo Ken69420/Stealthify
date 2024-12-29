@@ -4,7 +4,12 @@ const { Employee } = require("../models/employees");
 const AnonymizedEmployee = require("../models/anonymizedEmployee");
 const decryptedEmployee = require("../models/decryptedEmployee");
 const encryptedEmployee = require("../models/encryptedEmployee");
+const AnonymizationSettings = require("../models/settings");
+const EmployeeMapping = require("../models/employeeMapping");
 const axios = require("axios");
+const mongoose = require("mongoose");
+const { Parser } = require("json2csv");
+const fs = require("fs");
 
 //Helper functions for anonymization
 
@@ -92,18 +97,34 @@ router.post("/anonymize", async (req, res) => {
         .send({ message: "Anonymization settings are required" });
     }
 
+    //Generate a unique file ID
+    const fileId = new mongoose.Types.ObjectId();
+
+    //Save the settings with fileId
+    await AnonymizationSettings.create({
+      fileId,
+      settings,
+    });
+
     //Fetch all employees
     const encryptedEmployeesList = await encryptedEmployee.find({});
 
     // Decrypt each employee
     const decryptedEmployees = [];
-    for (const encryptedEmployee of encryptedEmployeesList) {
+    for (const encryptedEmp of encryptedEmployeesList) {
       const response = await axios.post(
         "http://localhost:3000/api/decryption/decrypt",
-        { employeeId: encryptedEmployee.employeeId }
+        { employeeId: encryptedEmp.employeeId }
       );
-      decryptedEmployees.push(response.data.data);
+
+      if (!response.data?.data) {
+        console.error("Decryption failed for employee:", encryptedEmp);
+      } else {
+        decryptedEmployees.push(response.data.data);
+      }
     }
+
+    console.log("Decrypted Employee: ", decryptedEmployees);
 
     //apply anonymization settings
     const anonymizedEmployees = decryptedEmployees.map((employee) => {
@@ -199,14 +220,59 @@ router.post("/anonymize", async (req, res) => {
     });
 
     //save anonymized data to the database under AnonymizedEmployee collection
-    await AnonymizedEmployee.insertMany(anonymizedEmployees);
+    const results = await AnonymizedEmployee.insertMany(anonymizedEmployees);
+
+    console.log("Anonymized employees saved to the database", results);
+
+    // Ensure the result has anonymizedEmployeeId (by checking the returned documents)
+    const anonymizedEmployeeIds = results.map((doc) => doc.employeeId);
+
+    console.log("Anonymized Employee IDs:", anonymizedEmployeeIds);
+
+    // Create Mapping between encrypted and anonymized data
+    for (let i = 0; i < anonymizedEmployeeIds.length; i++) {
+      console.log(
+        `Mapping: anonymizedEmployeeId: ${anonymizedEmployeeIds[i]}, encryptedEmployeeId: ${encryptedEmployeesList[i].employeeId}`
+      );
+
+      const mapping = new EmployeeMapping({
+        anonymizedEmployeeId: anonymizedEmployeeIds[i], // Use the _id from the anonymized employee documents
+        encryptedEmployeeId: encryptedEmployeesList[i].employeeId, // Use the _id from the encrypted employee
+      });
+
+      await mapping.save();
+    }
+
+    console.log("Mapping Saved");
 
     //delete decrypted data
     await decryptedEmployee.deleteMany({});
     console.log("Decrypted data deleted successfully");
 
-    console.log("Anonymization completed successfully");
-    res.status(201).send({ message: "Anonymization completed successfully." });
+    //Generate CSV from anonymized  employees
+    const anonymizedDataForCSV = anonymizedEmployees.map((employee) => ({
+      employeeId: employee.employeeId,
+      email: employee.email,
+      phoneNo: employee.phoneNo,
+      department: employee.department,
+      jobRole: employee.jobRole,
+      educationField: employee.educationField,
+      attrition: employee.attrition,
+      environmentSatisfactory: employee.environmentSatisfactory,
+      jobSatisfaction: employee.jobSatisfaction,
+      performanceRating: employee.performanceRating,
+    }));
+
+    //Convert to JSON
+    const anonymizedDataJson = JSON.stringify(anonymizedEmployees, null, 2);
+
+    //Send JSON data as response for download
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=anonymizedData.json"
+    );
+    res.send(anonymizedDataJson);
   } catch (error) {
     console.error("Error during anonymization:", error.message);
     res

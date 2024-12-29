@@ -1,23 +1,65 @@
-<div class="login-container">
-    <div class="login-box">
-      <form (ngSubmit)="onLogin($event)">
-        <div class="form-group">
-            <input type="text" placeholder="Username" [(ngModel)]="username" name="username" required />
-        </div>
-        <div class="form-group">
-          <input type="password" placeholder="Password" name="password" [(ngModel)] ="password" required/>
-        </div>
-        <button type="submit" class="login-button">Login</button>
-      </form>
+<div
+  class="flex items-center justify-center min-h-screen bg-custom-bg2 bg-cover bg-center"
+>
+  <div
+    class="bg-white/70 p-8 rounded-lg shadow-lg w-full max-w-md"
+    style="backdrop-filter: blur(10px)"
+  >
+    <!-- Login Form -->
+    <form *ngIf="!isOtpSent" (ngSubmit)="onLogin($event)" class="space-y-6">
+      <h2 class="text-2xl font-bold text-gray-800 text-center">Login</h2>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Username"
+          [(ngModel)]="username"
+          name="username"
+          required
+          class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          placeholder="Password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition"
+      >
+        Login
+      </button>
+    </form>
 
-      <!-- Show the OTP form if OTP has been sent -->
-       <form *ngIf="isOtpSent"(ngSubmit)="onVerifyOtp()">
-        <div class="form-group">
-          <input type="text" placeholder="Enter OTP" [(ngModel)]="otp" name="otp" required="">
-        </div>
-        <button type="submit" class="login-button">Verify OTP</button>
-       </form>
+    <!-- OTP Form -->
+    <form *ngIf="isOtpSent" (ngSubmit)="onVerifyOtp()" class="space-y-6">
+      <h2 class="text-2xl font-bold text-gray-800 text-center">Enter OTP</h2>
+      <div class="form-group">
+        <input
+          type="text"
+          placeholder="Enter OTP"
+          [(ngModel)]="otp"
+          name="otp"
+          required
+          class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full py-3 bg-green-600 text-white rounded-md font-semibold hover:bg-green-700 transition"
+      >
+        Verify OTP
+      </button>
+    </form>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="mt-4 text-red-500 text-center">
+      {{ errorMessage }}
     </div>
-    <div *ngIf="errorMessage" style=" color:red;">{{errorMessage}}</div>
   </div>
-  
+</div>

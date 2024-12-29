@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { MenubarComponent } from '../menubar/menubar.component';
+
+interface AnonymizationResponse {
+  fileId: string;
+  message: string;
+}
 
 interface Settings {
   masking: {
@@ -42,9 +48,8 @@ interface Settings {
 @Component({
   selector: 'app-anonymization',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, MenubarComponent],
   templateUrl: './anonymization.component.html',
-  styleUrl: './anonymization.component.css',
 })
 export class AnonymizationComponent {
   settings: Settings = {
@@ -96,15 +101,29 @@ export class AnonymizationComponent {
     console.log('Submitting anonymization settings...', this.settings);
 
     //Make POST request to the Backend
-    this.http.post(this.apiUrl, { settings: this.settings }).subscribe({
-      next: (response) => {
-        console.log('Anonymization applied successfully!', response);
-        alert('AAnonymization was successful!');
-      },
-      error: (error) => {
-        console.error('Error during anonymization:', error);
-        alert('Failed to apply anonymization. Please try again.');
-      },
-    });
+    this.http
+      .post<AnonymizationResponse>(
+        this.apiUrl,
+        { settings: this.settings },
+        { responseType: 'json' }
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Anonymization applied successfully!', response);
+          //trigger file download
+          const blob = new Blob([JSON.stringify(response)], {
+            type: 'application/json',
+          });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = 'anonymized_data.json';
+          link.click();
+          alert(`Anonymization was successful!`);
+        },
+        error: (error) => {
+          console.error('Error during anonymization:', error);
+          alert('Failed to apply anonymization. Please try again.');
+        },
+      });
   }
 }

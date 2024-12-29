@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username: string = '';
@@ -18,7 +17,10 @@ export class LoginComponent {
   isOtpSent: boolean = false;
   errorMessage: string = '';
 
-  constructor(private AuthService: AuthenticationService, private router:Router){}
+  constructor(
+    private AuthService: AuthenticationService,
+    private router: Router
+  ) {}
 
   // Handle Login with username and password
   onLogin(event: Event) {
@@ -27,7 +29,7 @@ export class LoginComponent {
     this.AuthService.login(this.username, this.password).subscribe(
       (response) => {
         //OTP has been sent , show OTP form
-        this.isOtpSent =  true;
+        this.isOtpSent = true;
         alert('OTP has been sent to your email. Please Enter to continue.');
         /*
         //store the token in localStorage
@@ -36,21 +38,22 @@ export class LoginComponent {
         this.router.navigate(['/homepage']);
         */
       },
-      (error) =>{
+      (error) => {
         console.error('Login error:', error);
-        this.errorMessage = "Login failed! Please check your username and password";
+        this.errorMessage =
+          'Login failed! Please check your username and password';
       }
     );
   }
 
   //Handle OTP submission
-  onVerifyOtp(){
+  onVerifyOtp() {
     this.AuthService.verifyOtp(this.username, this.otp).subscribe(
       (response: any) => {
         alert('Login successful!');
 
         //store the token into local storage
-        localStorage.setItem('token',response.token);
+        localStorage.setItem('token', response.token);
         console.log('token stored in localStorage:', response.token);
         this.router.navigate(['/homepage']);
         console.log('navigate to dashboard');
