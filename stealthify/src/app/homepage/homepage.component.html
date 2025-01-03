@@ -147,15 +147,31 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-gray-100 rounded-lg p-6">
           <h3 class="text-gray-600 font-medium mb-2">Total Employees</h3>
-          <p class="text-4xl font-bold text-gray-800">1,234</p>
+          <p class="text-4xl font-bold text-gray-800">
+            {{ stats.totalEntries || "Loading..." }}
+          </p>
         </div>
         <div class="bg-gray-100 rounded-lg p-6">
           <h3 class="text-gray-600 font-medium mb-2">Department</h3>
-          <p class="text-4xl font-bold text-gray-800">12</p>
+          <p class="text-4xl font-bold text-gray-800">
+            {{ stats.totalDepartments || "Loading..." }}
+          </p>
         </div>
         <div class="bg-gray-100 rounded-lg p-6">
           <h3 class="text-gray-600 font-medium mb-2">Avg. Satisfaction</h3>
-          <p class="text-4xl font-bold text-gray-800">7.8</p>
+          <div *ngIf="stats">
+            <p class="text-4xl font-bold text-gray-800">
+              {{ stats.avgSatisfaction }}
+            </p>
+          </div>
+          <div
+            *ngIf="
+              stats.avgSatisfaction === undefined ||
+              stats.avgSatisfaction === null
+            "
+          >
+            <p class="text-4xl font-bold text-gray-800">Loading...</p>
+          </div>
         </div>
       </div>
     </div>

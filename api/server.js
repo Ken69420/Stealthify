@@ -11,6 +11,7 @@ const anonymization = require("./routes/anonymization");
 const encryptionRoutes = require("./routes/encryption");
 const decryptionRoutes = require("./routes/decryption");
 const deanonymizationRoutes = require("./routes/deanonymization");
+const statsRoutes = require("./models/stats");
 
 const app = express();
 const PORT = 3000;
@@ -51,31 +52,7 @@ app.use("/api/encryption", encryptionRoutes); // Encryption route
 app.use("/api/decryption", decryptionRoutes); // Decryption route
 app.use("/api/deanonymization", deanonymizationRoutes); //Deanonymization route
 app.use("/downloads", express.static(path.join(__dirname, "downloads")));
-
-// Mock activity logs endpoint
-app.get("/api/activity-logs", (req, res) => {
-  const logs = [
-    {
-      timestamp: "2023-10-01 10:00:00",
-      activity: "Login",
-      user: "Dash Abdul Somad",
-      severity: "Low",
-    },
-    {
-      timestamp: "2023-10-01 10:05:00",
-      activity: "File Upload",
-      user: "Dane Dalilah",
-      severity: "Medium",
-    },
-    {
-      timestamp: "2023-10-01 10:10:00",
-      activity: "Error",
-      user: "Khawarizmi",
-      severity: "High",
-    },
-  ];
-  res.json(logs);
-});
+app.use("/api", statsRoutes); //Stats route
 
 //Start the server
 app.listen(3000, () => {
