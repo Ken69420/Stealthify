@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { Employee } = require("../models/employees");
 const AnonymizedEmployee = require("../models/anonymizedEmployee");
 const decryptedEmployee = require("../models/decryptedEmployee");
 const encryptedEmployee = require("../models/encryptedEmployee");
@@ -8,8 +7,6 @@ const AnonymizationSettings = require("../models/settings");
 const EmployeeMapping = require("../models/employeeMapping");
 const axios = require("axios");
 const mongoose = require("mongoose");
-const { Parser } = require("json2csv");
-const fs = require("fs");
 
 //Helper functions for anonymization
 

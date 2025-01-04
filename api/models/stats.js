@@ -16,12 +16,12 @@ router.get("/stats", async (req, res) => {
       },
     ]);
 
-    const avgJobSatisfaction = result[0]?.avgJobSatisfaction || 0;
+    const avgSatisfaction = result[0]?.avgJobSatisfaction || 0;
 
     res.json({
       totalEntries,
       totalDepartments: uniqueDepartment.length,
-      avgJobSatisfaction,
+      avgSatisfaction,
     });
   } catch (error) {
     console.error("Error fetching stats:", error.message);

@@ -37,7 +37,6 @@ export class HomepageComponent implements OnInit {
       }>('http://localhost:3000/api/stats')
       .subscribe(
         (data) => {
-          console.log('Data received:', data); // Check if avgSatisfaction is present
           this.stats = {
             totalEntries: data.totalEntries,
             totalDepartments: data.totalDepartments,

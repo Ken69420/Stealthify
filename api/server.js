@@ -30,11 +30,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//example route
-app.get("/api/data", (req, res) => {
-  res.json({ message: "Hello from the backend!" });
-});
-
 //Connect to MongoDB
 mongoose
   .connect(mongoURL, { serverSelectionTimeoutMS: 30000 })

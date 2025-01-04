@@ -2,7 +2,6 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const encryptedEmployee = require("../models/encryptedEmployee");
 const decryptedEmployee = require("../models/decryptedEmployee");
 const EmployeeMapping = require("../models/employeeMapping");
 const axios = require("axios");
@@ -39,14 +38,8 @@ router.post("/deanonymize", upload.single("file"), async (req, res) => {
       message: "JSON processed and de-anonymized successfully",
       succees: true,
       data: deAnonymizedData,
-      downloadLink: `/downloads/deanonymized_data.json`,
+      downloadLink: `http://localhost:3000/downloads/deanonymized_data.json`,
     });
-
-    //Delete  the deanonymized file after sending the response
-    setTimeout(() => {
-      fs.unlinkSync(outputFilePath);
-      console.log("Deanonymized file is deleted");
-    }, 20000);
 
     //Delete the uploaded file
     fs.unlinkSync(filePath);
