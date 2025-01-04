@@ -1,9 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const path = require("path");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const employeeRoutes = require("./models/employees");
@@ -12,12 +9,15 @@ const encryptionRoutes = require("./routes/encryption");
 const decryptionRoutes = require("./routes/decryption");
 const deanonymizationRoutes = require("./routes/deanonymization");
 const statsRoutes = require("./models/stats");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 //MongoDB Atlas URL
-const mongoURL = "mongodb://localhost:27017/StealthifyDB";
+const mongoURL = process.env.MONGO_URL;
 
 //Middleware
 app.use(cors());
@@ -39,6 +39,11 @@ mongoose
     console.error("Full Error stack:", err);
   });
 
+// Serve static files from the Angular app
+app.use(
+  express.static(path.join(__dirname, "../stealthify/dist/stealthify/browser"))
+);
+
 //Mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api", employeeRoutes); // saving Employee information route
@@ -48,6 +53,14 @@ app.use("/api/decryption", decryptionRoutes); // Decryption route
 app.use("/api/deanonymization", deanonymizationRoutes); //Deanonymization route
 app.use("/downloads", express.static(path.join(__dirname, "downloads")));
 app.use("/api", statsRoutes); //Stats route
+
+// Catch-all handler to serve the Angular app for any other routes
+app.get("*", (req, res) => {
+  console.log(`Received request for ${req.url}`);
+  res.sendFile(
+    path.join(__dirname, "../stealthify/dist/stealthify/browser/index.html")
+  );
+});
 
 //Start the server
 app.listen(3000, () => {
