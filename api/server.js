@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 const mongoURL = process.env.MONGO_URL;
 
 const corsOptions = {
-  origin: "https://stealthify.dewn.org",
+  origin: "https://localhost",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
