@@ -90,7 +90,7 @@ export class AnonymizationComponent {
   };
 
   datasets = ['Random Names', 'Anonymous IDs', 'Placeholder Text'];
-  apiUrl = `${environment.apiUrl}/anonymizaztion/anonymize`;
+  apiUrl = `${environment.apiUrl}/anonymization/anonymize`;
 
   constructor(private http: HttpClient) {}
 
