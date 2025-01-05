@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://206.189.46.253:3000/api', // Replace with your production API URL
+  apiUrl: 'https://stealthify.dewn.org/api', // Replace with your production API URL
   // Add any other environment-specific variables here
 };
