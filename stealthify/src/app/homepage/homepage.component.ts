@@ -3,6 +3,7 @@ import { MenubarComponent } from '../menubar/menubar.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-homepage',
@@ -34,7 +35,7 @@ export class HomepageComponent implements OnInit {
         totalEntries: number;
         totalDepartments: number;
         avgSatisfaction: number;
-      }>('http://localhost:3000/api/stats')
+      }>(`${environment.apiUrl}/stats`)
       .subscribe(
         (data) => {
           this.stats = {

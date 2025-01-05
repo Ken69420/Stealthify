@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs';
 import { throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-deanonymization',
@@ -67,7 +68,7 @@ export class DeanonymizationComponent {
 
     // Send the file to backend3
     this.http
-      .post('http://localhost:3000/api/deanonymization/deanonymize', formData)
+      .post(`${environment.apiUrl}/deanonymization/deanonymize`, formData)
       .pipe(
         catchError((error) => {
           this.isLoading = false;

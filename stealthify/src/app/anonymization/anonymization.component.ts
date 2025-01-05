@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { MenubarComponent } from '../menubar/menubar.component';
+import { environment } from '../../environments/environment';
 
 interface AnonymizationResponse {
   fileId: string;
@@ -89,7 +90,7 @@ export class AnonymizationComponent {
   };
 
   datasets = ['Random Names', 'Anonymous IDs', 'Placeholder Text'];
-  apiUrl = 'http://localhost:3000/api/anonymization/anonymize';
+  apiUrl = `${environment.apiUrl}/anonymizaztion/anonymize`;
 
   constructor(private http: HttpClient) {}
 

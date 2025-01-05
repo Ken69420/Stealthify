@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MenubarComponent } from '../menubar/menubar.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-data-entry',
@@ -65,7 +66,7 @@ export class DataEntryComponent {
     formData.append('file', this.selectedFile);
 
     this.http
-      .post('http://localhost:3000/api/employees/upload', formData)
+      .post(`${environment.apiUrl}/employees/upload`, formData)
       .subscribe(
         (response: any) => {
           console.log('Response from server:', response);
@@ -80,7 +81,7 @@ export class DataEntryComponent {
 
   submitForm() {
     this.http
-      .post('http://localhost:3000/api/employees/save', this.formData)
+      .post(`${environment.apiUrl}/employees/save`, this.formData)
       .subscribe(
         (response: any) => {
           console.log('Employee data saved:', response);
