@@ -38,7 +38,7 @@ router.post("/deanonymize", upload.single("file"), async (req, res) => {
       message: "JSON processed and de-anonymized successfully",
       succees: true,
       data: deAnonymizedData,
-      downloadLink: `http://localhost:3000/downloads/deanonymized_data.json`,
+      downloadLink: `https://stealthify.dewn.org/downloads/deanonymized_data.json`,
     });
 
     //Delete the uploaded file
