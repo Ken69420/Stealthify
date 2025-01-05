@@ -45,11 +45,6 @@ mongoose
     console.error("Full Error stack:", err);
   });
 
-// Serve static files from the Angular app
-app.use(
-  express.static(path.join(__dirname, "../stealthify/dist/stealthify/browser"))
-);
-
 //Mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api", employeeRoutes); // saving Employee information route
