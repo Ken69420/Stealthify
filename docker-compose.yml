@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./api # Context is the 'api' directory
+      dockerfile: dockerfile
+    container_name: stealthify_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/stealthify
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: stealthify_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  nginx:
+    image: nginx:latest
+    container_name: stealthify_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:

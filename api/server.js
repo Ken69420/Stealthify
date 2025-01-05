@@ -19,8 +19,14 @@ const PORT = process.env.PORT || 3000;
 //MongoDB Atlas URL
 const mongoURL = process.env.MONGO_URL;
 
+const corsOptions = {
+  origin: "https://stealthify.dewn.org",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+
 //Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
