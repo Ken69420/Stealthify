@@ -24,6 +24,7 @@ services:
       context: .
       dockerfile: stealthify/dockerfile
     container_name: stealthify_frontend
+    volumes: frontend-dist:/app/dist/stealthify/browser
     ports:
       - "8080:80"
     depends_on:
@@ -35,6 +36,7 @@ services:
     ports:
       - "80:80"
     volumes:
+      - frontend-dist:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/nginx.conf # Mount the main nginx.conf
       - ./default.conf:/etc/nginx/conf.d/default.conf # Server-specific config file
     depends_on:
@@ -43,3 +45,4 @@ services:
 
 volumes:
   mongo-data:
+  frontend-dist:
