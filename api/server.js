@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3000;
 const mongoURL = process.env.MONGO_URL;
 
 const corsOptions = {
-  origin: ["https://localhost", "http://localhost:4200"],
+  origin: ["http://206.189.46.253", "http://localhost:4200"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
