@@ -32,9 +32,9 @@ const generalizeValue = (value, range) => {
 
 const substitutedAttrition = (value, dataset) => {
   const anonymizationStrategies = {
-    randomNames: { Yes: "John", No: "Doe" },
-    anonymousId: { Yes: "07", No: "08" },
-    placeholders: { Yes: "Lorem", No: "Ipsum" },
+    "Random Names": { yes: "John", no: "Doe" },
+    "Anonymous IDs": { yes: "07", no: "08" },
+    "Placeholder Text": { yes: "Lorem", no: "Ipsum" },
   };
 
   //Default to the value if the datasets is not found
@@ -137,8 +137,6 @@ router.post("/anonymize", async (req, res) => {
         decryptedEmployees.push(response.data.data);
       }
     }
-
-    console.log("Decrypted Employee: ", decryptedEmployees);
 
     //apply anonymization settings
     const anonymizedEmployees = decryptedEmployees.map((employee) => {
@@ -243,19 +241,11 @@ router.post("/anonymize", async (req, res) => {
     //save anonymized data to the database under AnonymizedEmployee collection
     const results = await AnonymizedEmployee.insertMany(anonymizedEmployees);
 
-    console.log("Anonymized employees saved to the database", results);
-
     // Ensure the result has anonymizedEmployeeId (by checking the returned documents)
     const anonymizedEmployeeIds = results.map((doc) => doc.employeeId);
 
-    console.log("Anonymized Employee IDs:", anonymizedEmployeeIds);
-
     // Create Mapping between encrypted and anonymized data
     for (let i = 0; i < anonymizedEmployeeIds.length; i++) {
-      console.log(
-        `Mapping: anonymizedEmployeeId: ${anonymizedEmployeeIds[i]}, encryptedEmployeeId: ${encryptedEmployeesList[i].employeeId}`
-      );
-
       const mapping = new EmployeeMapping({
         anonymizedEmployeeId: anonymizedEmployeeIds[i], // Use the _id from the anonymized employee documents
         encryptedEmployeeId: encryptedEmployeesList[i].employeeId, // Use the _id from the encrypted employee
@@ -264,13 +254,11 @@ router.post("/anonymize", async (req, res) => {
       await mapping.save();
     }
 
-    console.log("Mapping Saved");
-
     //delete decrypted data
     await decryptedEmployee.deleteMany({});
     console.log("Decrypted data deleted successfully");
 
-    //Generate CSV from anonymized  employees
+    //Generate JSON from anonymized employees
     const anonymizedDataForCSV = anonymizedEmployees.map((employee) => ({
       employeeId: employee.employeeId,
       email: employee.email,

@@ -133,7 +133,6 @@ const reverseTransformAttrition = (value) => {
 };
 
 router.post("/decrypt", async (req, res) => {
-  console.log("Decryption endpoint reached");
   try {
     const employeeId = req.body.employeeId;
 
@@ -184,7 +183,6 @@ router.post("/decrypt", async (req, res) => {
     const decryptedEmployee = new DecryptedEmployee(decryptedData);
     await decryptedEmployee.save();
 
-    console.log("Decryption finished successfully");
     res.status(200).json({ data: decryptedEmployee });
   } catch (error) {
     console.error("Error decrypting employee data:", error.message);

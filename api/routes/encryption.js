@@ -132,7 +132,6 @@ const transformAttrition = (attrition) => {
 };
 
 router.post("/encrypt", async (req, res) => {
-  console.log("Encryption endpoint reached");
   try {
     const employeeId = req.body.employeeId || "Not Provided";
 
