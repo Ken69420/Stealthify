@@ -41,7 +41,7 @@ export class HomepageComponent implements OnInit {
           this.stats = {
             totalEntries: data.totalEntries,
             totalDepartments: data.totalDepartments,
-            avgSatisfaction: data.avgSatisfaction,
+            avgSatisfaction: parseFloat(data.avgSatisfaction.toFixed(1)),
           };
         },
         (error) => {
