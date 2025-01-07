@@ -37,6 +37,19 @@ const reverseSubstitution = (value, type) => {
   }
 };
 
+//Setting up the VOWEL_MAP and REVERSE_VOWEL_MAP
+const VOWEL_MAP = {
+  a: "eW8",
+  e: "iX9",
+  i: "oZ0",
+  o: "uY1",
+  u: "aV2",
+};
+
+const REVERSE_VOWEL_MAP = Object.fromEntries(
+  Object.entries(VOWEL_MAP).map(([key, value]) => [value, key])
+);
+
 const reverseRotateEmailCharacters = (encryptedEmail) => {
   let decrypted = "";
   for (let i = 0; i < encryptedEmail.length; i++) {
