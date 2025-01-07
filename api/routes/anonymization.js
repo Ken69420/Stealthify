@@ -29,6 +29,23 @@ const generalizeValue = (value, range) => {
   const max = min + range - 1;
   return `${min}-${max}`;
 };
+
+const substitutedAttrition = (value, dataset) => {
+  const anonymizationStrategies = {
+    randomNames: { Yes: "John", No: "Doe" },
+    anonymousId: { Yes: "07", No: "08" },
+    placeholders: { Yes: "Lorem", No: "Ipsum" },
+  };
+
+  //Default to the value if the datasets is not found
+  const anonymizedData = anonymizationStrategies[dataset] || {
+    Yes: value,
+    No: value,
+  };
+
+  return anonymizedData[value] || value;
+};
+
 const maskEmail = (email, visibleCharacters) => {
   const [localPart, domain] = email.split("@");
 
@@ -192,6 +209,7 @@ router.post("/anonymize", async (req, res) => {
         );
       }
 
+      //Label Encoding
       if (settings.labelEncoding?.enabled) {
         if (settings.labelEncoding.gender) {
           anonymizedData.gender = labelEncoding(employee.gender, "gender");
@@ -204,11 +222,17 @@ router.post("/anonymize", async (req, res) => {
         }
       }
 
+      if (settings.substitution?.enabled) {
+        anonymizedData.attrition = substitutedAttrition(
+          employee.attrition,
+          settings.substitution.dataset
+        );
+      }
+
       // Preserve non-anonymized fields if needed
       anonymizedData.department = employee.department;
       anonymizedData.jobRole = employee.jobRole;
       anonymizedData.educationField = employee.educationField;
-      anonymizedData.attrition = employee.attrition;
       anonymizedData.environmentSatisfactory = employee.environmentSatisfactory;
       anonymizedData.jobSatisfaction = employee.jobSatisfaction;
       anonymizedData.performanceRating = employee.performanceRating;
