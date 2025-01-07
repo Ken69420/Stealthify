@@ -37,36 +37,37 @@ const reverseSubstitution = (value, type) => {
   }
 };
 
-const reverseRotateEmailCharacters = (text) => {
-  const vowelMap = { 4: "a", 3: "e", 1: "i", 0: "o", 7: "u" }; // Reverse vowel substitution
-  const alphabetLength = 26;
-  return text
-    .split("")
-    .map((char) => {
-      // Preserve certain characters without transforming them
-      if (
-        char === "@" ||
-        char === "." ||
-        char === "d" ||
-        !/[a-zA-Z0-9]/.test(char)
-      ) {
-        return char; // Leave @, ., d, and non-alphabetic characters unchanged
+const reverseRotateEmailCharacters = (encryptedEmail) => {
+  let decrypted = "";
+  for (let i = 0; i < encryptedEmail.length; i++) {
+    // Check if the next characters match any substituted vowel pattern
+    let match = null;
+    for (const [key, value] of Object.entries(REVERSE_VOWEL_MAP)) {
+      const slice = encryptedEmail.slice(i, i + key.length);
+      if (slice.toLowerCase() === key.toLowerCase()) {
+        match = { pattern: key, replacement: value };
+        break;
       }
+    }
 
-      // Reverse vowel substitution first if applicable
-      const substitutedChar = Object.keys(vowelMap).includes(char)
-        ? vowelMap[char]
-        : char;
-
-      // Reverse the rotation with wrapping
-      const charCode = substitutedChar.charCodeAt(0);
-      const isUpperCase = substitutedChar >= "A" && substitutedChar <= "Z";
-      const base = isUpperCase ? 65 : 97; // ASCII codes for 'A' or 'a'
-      return String.fromCharCode(
-        ((charCode - base - 5 + alphabetLength) % alphabetLength) + base
-      );
-    })
-    .join("");
+    if (match) {
+      const isUpperCase = encryptedEmail[i] === encryptedEmail[i].toUpperCase();
+      decrypted += isUpperCase
+        ? match.replacement.toUpperCase()
+        : match.replacement;
+      i += match.pattern.length - 1; // Skip over the matched pattern
+    } else {
+      const charCode = encryptedEmail[i].charCodeAt(0);
+      if (encryptedEmail[i] >= "A" && encryptedEmail[i] <= "Z") {
+        decrypted += String.fromCharCode(((charCode - 65 + 13) % 26) + 65);
+      } else if (encryptedEmail[i] >= "a" && encryptedEmail[i] <= "z") {
+        decrypted += String.fromCharCode(((charCode - 97 + 13) % 26) + 97);
+      } else {
+        decrypted += encryptedEmail[i];
+      }
+    }
+  }
+  return decrypted;
 };
 
 const reverseTransformPhoneNo = (phoneNo) => {

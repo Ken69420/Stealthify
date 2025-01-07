@@ -42,34 +42,36 @@ const substitution = (value, type) => {
   }
 };
 
-const rotateEmailCharacters = (text) => {
-  const vowelMap = { a: "4", e: "3", i: "1", o: "0", u: "7" }; // Vowel substitution
-  const alphabetLength = 26;
-  return text
-    .split("")
-    .map((char) => {
-      // Preserve certain characters without transforming them
-      if (
-        char === "@" ||
-        char === "." ||
-        char === "d" ||
-        !/[a-zA-Z]/.test(char)
-      ) {
-        return char; // Leave @, ., d, and non-alphabetic characters unchanged
-      }
+const VOWEL_MAP = {
+  a: "eW8",
+  e: "iX9",
+  i: "oZ0",
+  o: "uY1",
+  u: "aV2",
+};
 
-      // Transform alphabetic characters with wrapping
-      const charCode = char.charCodeAt(0);
-      const isUpperCase = char >= "A" && char <= "Z";
-      const base = isUpperCase ? 65 : 97; // ASCII codes for 'A' or 'a'
-      const rotatedChar = String.fromCharCode(
-        ((charCode - base + 5) % alphabetLength) + base
-      );
+const REVERSE_VOWEL_MAP = Object.fromEntries(
+  Object.entries(VOWEL_MAP).map(([key, value]) => [value, key])
+);
 
-      // Apply vowel substitution if applicable
-      return vowelMap[rotatedChar.toLowerCase()] || rotatedChar;
-    })
-    .join("");
+const rotateEmailCharacters = (email) => {
+  let encrypted = "";
+  for (const char of email) {
+    const charCode = char.charCodeAt(0);
+    if (VOWEL_MAP[char.toLowerCase()]) {
+      encrypted +=
+        char === char.toLowerCase()
+          ? VOWEL_MAP[char]
+          : VOWEL_MAP[char.toLowerCase()].toUpperCase();
+    } else if (char >= "A" && char <= "Z") {
+      encrypted += String.fromCharCode(((charCode - 65 + 13) % 26) + 65);
+    } else if (char >= "a" && char <= "z") {
+      encrypted += String.fromCharCode(((charCode - 97 + 13) % 26) + 97);
+    } else {
+      encrypted += char;
+    }
+  }
+  return encrypted;
 };
 
 const transformPhoneNo = (phoneNo) => {
