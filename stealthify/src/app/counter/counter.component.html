@@ -1,0 +1,113 @@
+<div class="container mx-auto p-6 mt-20">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-800 mb-2">Pentillion Counter</h1>
+      <p class="text-gray-600">Counting from 1 to 1,000,000,000,000,000 (one pentillion)</p>
+      <p class="text-sm text-gray-500 mt-2">⚠️ This will take approximately 31.7 million years to complete!</p>
+    </div>
+
+    <!-- Main Counter Display -->
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-6">
+      <div class="text-center">
+        <div class="text-6xl font-mono font-bold text-blue-600 mb-4">
+          {{ formatNumber(counterState.currentCount) }}
+        </div>
+        <div class="text-lg text-gray-600 mb-2">
+          out of {{ formatNumber(counterState.target) }}
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+          <div 
+            class="bg-blue-600 h-4 rounded-full transition-all duration-300" 
+            [style.width.%]="counterState.progress">
+          </div>
+        </div>
+        <div class="text-sm text-gray-500">
+          Progress: {{ counterState.progress.toFixed(6) }}%
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <!-- Status Card -->
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Status</h3>
+        <div class="flex items-center">
+          <div 
+            class="w-3 h-3 rounded-full mr-2"
+            [class.bg-green-500]="counterState.isRunning"
+            [class.bg-red-500]="!counterState.isRunning">
+          </div>
+          <span [class.text-green-600]="counterState.isRunning" [class.text-red-600]="!counterState.isRunning">
+            {{ counterState.isRunning ? 'Running' : 'Stopped' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Elapsed Time Card -->
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Elapsed Time</h3>
+        <div class="text-sm text-gray-600">
+          {{ getElapsedTime() }}
+        </div>
+      </div>
+
+      <!-- Estimated Remaining Card -->
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Estimated Remaining</h3>
+        <div class="text-sm text-gray-600">
+          {{ counterState.estimatedTimeRemaining ? formatTime(counterState.estimatedTimeRemaining) : 'Calculating...' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Buttons -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Controls</h3>
+      <div class="flex space-x-4 justify-center">
+        <button 
+          (click)="startCounter()"
+          [disabled]="counterState.isRunning"
+          class="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200">
+          <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+          </svg>
+          Start
+        </button>
+
+        <button 
+          (click)="pauseCounter()"
+          [disabled]="!counterState.isRunning"
+          class="bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200">
+          <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zM11 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd"></path>
+          </svg>
+          Pause
+        </button>
+
+        <button 
+          (click)="resetCounter()"
+          class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200">
+          <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Information Section -->
+    <div class="bg-gray-50 rounded-lg p-6 mt-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">About This Counter</h3>
+      <div class="text-sm text-gray-600 space-y-2">
+        <p><strong>Target:</strong> 1 pentillion (10<sup>15</sup>) = 1,000,000,000,000,000</p>
+        <p><strong>Rate:</strong> 1 number per second</p>
+        <p><strong>Total Time:</strong> ~31,709,791 years if run continuously</p>
+        <p><strong>Note:</strong> This is a demonstration of large number counting. The counter state is maintained on the server and will persist between page refreshes.</p>
+      </div>
+    </div>
+  </div>
+</div>

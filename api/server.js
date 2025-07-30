@@ -9,6 +9,7 @@ const encryptionRoutes = require("./routes/encryption");
 const decryptionRoutes = require("./routes/decryption");
 const deanonymizationRoutes = require("./routes/deanonymization");
 const statsRoutes = require("./models/stats");
+const counterRoutes = require("./routes/counter");
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -54,6 +55,10 @@ app.use("/api/decryption", decryptionRoutes); // Decryption route
 app.use("/api/deanonymization", deanonymizationRoutes); //Deanonymization route
 app.use("/downloads", express.static(path.join(__dirname, "downloads")));
 app.use("/api", statsRoutes); //Stats route
+app.use("/api/counter", counterRoutes); // Counter route
+
+// Serve static files from Angular build
+app.use(express.static(path.join(__dirname, "../stealthify/dist/stealthify/browser")));
 
 // Catch-all handler to serve the Angular app for any other routes
 app.get("*", (req, res) => {

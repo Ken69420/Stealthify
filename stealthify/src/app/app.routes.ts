@@ -10,6 +10,7 @@ import { DataEntryComponent } from './data-entry/data-entry.component';
 import { ActivityComponent } from './activity/activity.component';
 import { AnonymizationComponent } from './anonymization/anonymization.component';
 import { DeanonymizationComponent } from './deanonymization/deanonymization.component';
+import { CounterComponent } from './counter/counter.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent }, // Default route to login
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'support', component: SupportComponent }, // Route to Settings page
   { path: 'anonymization', component: AnonymizationComponent }, // Route to Anonymization page
   { path: 'deanonymization', component: DeanonymizationComponent }, // Route to Deanonymization page
+  { path: 'counter', component: CounterComponent }, // Route to Counter page
   { path: '**', redirectTo: '', pathMatch: 'full' }, // Redirect unknown paths to login
 ];
 
